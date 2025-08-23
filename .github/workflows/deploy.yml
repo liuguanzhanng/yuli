@@ -23,6 +23,7 @@ jobs:
       - name: Detect package manager
         id: pm
         run: |
+          cd anzhiyu-blog
           if [ -f pnpm-lock.yaml ]; then echo "pm=pnpm" >> $GITHUB_OUTPUT
           elif [ -f yarn.lock ]; then echo "pm=yarn" >> $GITHUB_OUTPUT
           elif [ -f package-lock.json ]; then echo "pm=npm" >> $GITHUB_OUTPUT
@@ -34,11 +35,14 @@ jobs:
         with:
           node-version: '18'
           cache: ${{ steps.pm.outputs.pm }}
+          cache-dependency-path: 'anzhiyu-blog/package-lock.json'
 
       # 安装依赖和构建
       - name: Install dependencies and build
         run: |
           set -e
+          cd anzhiyu-blog
+
           # 安装依赖
           if [ "${{ steps.pm.outputs.pm }}" = "pnpm" ]; then
             npm install -g pnpm
@@ -63,7 +67,7 @@ jobs:
 
           # 检查构建输出目录
           if [ -d "public" ]; then
-            echo "OUT_DIR=public" >> $GITHUB_ENV
+            echo "OUT_DIR=anzhiyu-blog/public" >> $GITHUB_ENV
           else
             echo "Build output directory not found!"
             exit 1
