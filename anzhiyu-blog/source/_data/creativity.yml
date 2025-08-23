@@ -1,0 +1,91 @@
+# 技能图标轮播配置
+- class_name: 技能
+  creativity_list:
+    - name: HTML5
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg
+      color: "#E34F26"
+    - name: CSS3
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg
+      color: "#1572B6"
+    - name: JavaScript
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg
+      color: "#F7DF1E"
+    - name: TypeScript
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg
+      color: "#3178C6"
+    - name: Vue.js
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg
+      color: "#4FC08D"
+    - name: React
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg
+      color: "#61DAFB"
+    - name: Node.js
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg
+      color: "#339933"
+    - name: Python
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg
+      color: "#3776AB"
+    - name: Java
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg
+      color: "#ED8B00"
+    - name: Git
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg
+      color: "#F05032"
+    - name: Docker
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg
+      color: "#2496ED"
+    - name: MySQL
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg
+      color: "#4479A1"
+    - name: MongoDB
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg
+      color: "#47A248"
+    - name: Redis
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg
+      color: "#DC382D"
+    - name: Nginx
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg
+      color: "#009639"
+    - name: Linux
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg
+      color: "#FCC624"
+    - name: VS Code
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg
+      color: "#007ACC"
+    - name: Photoshop
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/photoshop/photoshop-line.svg
+      color: "#31A8FF"
+    - name: Figma
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg
+      color: "#F24E1E"
+    - name: Webpack
+      icon: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/webpack/webpack-original.svg
+      color: "#8DD6F9"
+
+# 推荐文章配置
+- class_name: 荐
+  creativity_list:
+    - creativity_name: 为你的博客安装上便携小空调
+      creativity_desc: 为你的博客安装上便携小空调，让你的博客更加清爽
+      creativity_url: /air-conditioner/
+      creativity_img: https://img02.anheyu.com/adminuploads/1/2023/06/15/648a5c8b7bb6.webp
+    - creativity_name: butterfly 重装日记
+      creativity_desc: 记录butterfly主题的重装过程和心得体会
+      creativity_url: /2023/06/01/butterfly-重装日记/
+      creativity_img: https://img02.anheyu.com/adminuploads/1/2023/06/01/647e5c8b7bb6.webp
+    - creativity_name: 弹性盒子布局完全指南
+      creativity_desc: CSS弹性盒子布局详解，从入门到精通
+      creativity_url: /2023/05/20/弹性盒子布局完全指南/
+      creativity_img: https://img02.anheyu.com/adminuploads/1/2023/05/20/646e5c8b7bb6.webp
+    - creativity_name: 音乐meting自建api
+      creativity_desc: 解决meting api失效问题，自建音乐API服务
+      creativity_url: /2023/06/08/音乐meting自建api/
+      creativity_img: https://img02.anheyu.com/adminuploads/1/2023/06/08/648195c8b7bb6.webp
+    - creativity_name: 全新卡片式外链标签引入
+      creativity_desc: 携带跳转链接的卡片和不携带跳转链接的卡片
+      creativity_url: /2023/06/30/全新卡片式外链标签引入/
+      creativity_img: https://img02.anheyu.com/adminuploads/1/2023/06/30/649e5c8b7bb6.webp
+    - creativity_name: 长沙两日游记
+      creativity_desc: 长沙两日游，风景很美，美食也很棒！
+      creativity_url: /2023/08/10/长沙两日游记/
+      creativity_img: https://img02.anheyu.com/adminuploads/1/2023/08/10/64d4a8c5d4b2a.webp

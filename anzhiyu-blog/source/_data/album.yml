@@ -1,0 +1,103 @@
+- class_name: 世界各地夕阳与风景
+  path_name: /wordScenery
+  type: 2
+  description: 因为到不了世界各地，所以请网友们发来了各地的夕阳与风景🌇。
+  cover: https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop
+  top_background: https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=600&fit=crop
+  rowHeight: 220
+  limit: 10
+  lazyload: true
+  btnLazyload: false
+  url: false
+  top_link: /album
+  top_btn_text: 返回
+  album_list:
+    - date: 2024/12/26 01:00:00
+      content: 长沙的黄昏时分。
+      address: 湖南长沙
+      from: 郁离
+      image:
+        - https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop
+        - https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=600&fit=crop
+    - date: 2024-12-20
+      content: 湘江边的夕阳。
+      address: 湖南长沙
+      from: 路过的朋友
+      image:
+        - https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=600&fit=crop
+        - https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop
+    - date: 2024-12-15
+      content: 橘子洲头的美景。
+      address: 湖南长沙
+      from: 摄影爱好者
+      image:
+        - https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800&h=600&fit=crop
+    - date: 2024-12-10
+      content: 岳麓山的秋色。
+      address: 湖南长沙
+      from: 登山者
+      image:
+        - https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop
+        - https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop
+
+- class_name: 我的日常
+  path_name: /dailyPhoto
+  type: 1
+  description: 这里存放的是有关我自己的一些沙雕生活与有趣的事情。
+  top_link: /album
+  top_btn_text: 返回
+  top_background: https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=600&fit=crop
+  cover: https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop
+  album_list:
+    - date: 2024-12-25
+      content: 学校里的日常生活
+      image:
+        - https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=600&fit=crop
+    - date: 2024-12-20
+      content: 和朋友们的聚餐
+      image:
+        - https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=600&fit=crop
+        - https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop
+    - date: 2024-12-15
+      content: 宿舍里的温馨时光
+      image:
+        - https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop
+    - date: 2024-12-10
+      content: 图书馆学习的日子
+      image:
+        - https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=600&fit=crop
+        - https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop
+
+- class_name: 技术学习
+  path_name: /techPhoto
+  type: 2
+  description: 记录我的编程学习历程和技术成长瞬间💻。
+  cover: https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop
+  top_background: https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200&h=600&fit=crop
+  rowHeight: 200
+  limit: 8
+  lazyload: true
+  btnLazyload: false
+  url: false
+  top_link: /album
+  top_btn_text: 返回
+  album_list:
+    - date: 2024/12/25 10:00:00
+      content: 第一个React项目完成！
+      address: 湖南信息学院
+      from: 郁离
+      image:
+        - https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop
+    - date: 2024-12-20
+      content: 学习Vue3的收获
+      address: 宿舍
+      from: 郁离
+      image:
+        - https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop
+        - https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop
+    - date: 2024-12-15
+      content: 参加编程比赛的经历
+      address: 学校机房
+      from: 郁离
+      image:
+        - https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=800&h=600&fit=crop

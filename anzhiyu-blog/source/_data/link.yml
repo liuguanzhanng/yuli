@@ -1,0 +1,30 @@
+- class_name: 推荐网站
+  class_desc: 那些人，那些事
+  flink_style: anzhiyu
+  link_list:
+    - name: Linux.do
+      link: https://linux.do/
+      avatar: https://linux.do/uploads/default/original/3X/9/d/9dd49731091ce8656e94433a26a3ef36062b3994.png
+      descr: Linux中文社区，分享Linux知识与经验
+      siteshot: https://linux.do/uploads/default/original/3X/9/d/9dd49731091ce8656e94433a26a3ef36062b3994.png
+      color: "#FF6B6B"
+      tag: 技术社区
+
+- class_name: 小伙伴们
+  class_desc: 互相学习，共同进步
+  flink_style: anzhiyu
+  link_list:
+    - name: Hexo
+      link: https://hexo.io/
+      avatar: https://hexo.io/icon/favicon-196x196.png
+      descr: 快速、简洁且高效的博客框架
+      siteshot: https://hexo.io/icon/favicon-196x196.png
+      color: "#0E83CD"
+      tag: 框架
+    - name: GitHub
+      link: https://github.com/
+      avatar: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+      descr: 全球最大的代码托管平台
+      siteshot: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+      color: "#24292e"
+      tag: 代码托管

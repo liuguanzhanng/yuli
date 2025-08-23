@@ -1,0 +1,109 @@
+- class_name: 关于页
+  subtitle: 生活明朗，万物可爱✨
+  avatarImg: https://youke1.picui.cn/s1/2025/08/22/68a825af62714.png
+  avatarSkills:
+    left:
+      - 💻 前端开发工程师
+      - 🎨 UI/UX设计师
+      - 📝 技术博客写手
+      - 🔧 开源项目贡献者
+    right:
+      - 热爱分享技术知识 📚
+      - 追求代码优雅之美 ✨
+      - 专注用户体验设计 🎯
+      - 持续学习新技术栈 🚀
+  name: 郁离
+  description: 是一名 前端工程师、设计师、技术博主、开源爱好者
+  aboutsiteTips:
+    tips: 专注
+    title1: 用代码
+    title2: 创造美好 分享
+    word:
+      - 前端技术
+      - 设计理念
+      - 开发经验
+      - 生活感悟
+  helloAbout: Hello! 欢迎来到我的博客 👋
+  skillsTips:
+    tips: 技能栈
+    title: 持续精进中
+  careers:
+    tips: 技术栈
+    title: 持续学习成长
+    list:
+      - desc: HTML/CSS/JavaScript 基础扎实
+        color: "#e34c26"
+      - desc: Vue.js/React 框架开发
+        color: "#4fc08d"
+      - desc: Node.js 后端开发
+        color: "#339933"
+      - desc: UI/UX 设计与实现
+        color: "#ff6b6b"
+      - desc: 博客写作与技术分享
+        color: "#6c5ce7"
+    img: https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop
+  statistic:
+    link: /archives
+    text: 探索文章
+    cover: https://images.unsplash.com/photo-1432821596592-e2c18b78144f?w=800&h=600&fit=crop
+  map:
+    title: 我现在住在
+    StrengthenTitle: 中国，武汉市
+    background: https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop
+    backgroundDark: https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&brightness=0.3
+  selfInfo:
+    selfInfoTips1: 坐标
+    selfInfoContentYear: 武汉
+    selfInfoTips2: 专业领域
+    selfInfoContent2: 前端开发
+    selfInfoTips3: 当前状态
+    selfInfoContent3: 技术博主 & 开发者 💻
+  personalities:
+    author_name: 创新者
+    personality_type: ENTP-A
+    photo_url: https://youke1.picui.cn/s1/2025/08/22/68a825af62714.png
+    personality_img: https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=400&h=400&fit=crop
+    name_url: https://www.16personalities.com/ch/entp-人格
+  maxim:
+    maxim_tips: 座右铭
+    maxim_top: 生活明朗，
+    maxim_bottom: 万物可爱。
+  buff:
+    buff_tips: 特长
+    buff_top: 代码洁癖患者
+    buff_bottom: 设计美学追求者
+  game:
+    game_tips: 开发工具
+    game_title: VS Code
+    game_uid: "Extensions: 50+"
+    game_bg: https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop
+  comic:
+    comic_tips: 学习资源
+    comic_title: 技术学习
+    comic_list:
+      - name: Vue.js 官方文档
+        href: https://cn.vuejs.org/
+        cover: https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=300&h=400&fit=crop
+      - name: MDN Web Docs
+        href: https://developer.mozilla.org/zh-CN/
+        cover: https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=300&h=400&fit=crop
+      - name: GitHub
+        href: https://github.com/
+        cover: https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?w=300&h=400&fit=crop
+      - name: Stack Overflow
+        href: https://stackoverflow.com/
+        cover: https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=300&h=400&fit=crop
+      - name: 掘金社区
+        href: https://juejin.cn/
+        cover: https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=300&h=400&fit=crop
+  like:
+    like_tips: 关注领域
+    like_title: 前端技术 & 设计美学
+    like_bg: https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=800&h=600&fit=crop
+    like_bottom: JavaScript、CSS、UI设计
+  music:
+    music_tips: 编程音乐
+    music_title: Lo-fi、轻音乐、纯音乐
+    music_bg: https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop
+    music_link: /music
+  reward_list:
