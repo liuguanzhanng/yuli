@@ -263,6 +263,186 @@ sync-blog.bat backup
 2. 查看 [AnZhiYu主题文档](https://github.com/anzhiyu-c/hexo-theme-anzhiyu)
 3. 在GitHub仓库中提交Issue
 
+## 🚀 服务器端自动部署
+
+### 部署架构
+
+```
+本地开发 → GitHub仓库 → 服务器自动部署
+   ↓           ↓              ↓
+写文章/改配置  Git推送      Webhook触发
+本地预览      版本控制      自动拉取+构建
+```
+
+### 服务器端设置
+
+#### 1. 安装依赖
+
+```bash
+# Ubuntu/Debian
+sudo apt update
+sudo apt install git nodejs npm nginx
+
+# CentOS/RHEL
+sudo yum install git nodejs npm nginx
+```
+
+#### 2. 配置部署脚本
+
+```bash
+# 复制部署脚本到服务器
+scp server-deploy.sh user@your-server:/opt/
+sudo chmod +x /opt/server-deploy.sh
+
+# 编辑配置
+sudo nano /opt/server-deploy.sh
+# 修改以下变量：
+# DEPLOY_DIR="/var/www/blog"
+# WEB_ROOT="/var/www/html"
+```
+
+#### 3. 设置Webhook处理器
+
+**方案A: PHP版本**
+
+```bash
+# 复制PHP处理器到Web目录
+sudo cp webhook-handler.php /var/www/html/
+sudo chown www-data:www-data /var/www/html/webhook-handler.php
+
+# 配置Nginx
+sudo nano /etc/nginx/sites-available/webhook
+```
+
+**方案B: Node.js版本**
+
+```bash
+# 安装依赖
+npm install express
+
+# 使用PM2管理进程
+sudo npm install -g pm2
+pm2 start webhook-server.js --name webhook
+pm2 startup
+pm2 save
+```
+
+#### 4. GitHub Webhook配置
+
+1. 进入GitHub仓库设置
+2. 点击 "Webhooks" → "Add webhook"
+3. 配置：
+   - **Payload URL**: `http://your-server.com/webhook-handler.php`
+   - **Content type**: `application/json`
+   - **Secret**: 设置一个安全密钥
+   - **Events**: 选择 "Just the push event"
+
+#### 5. 测试自动部署
+
+```bash
+# 本地推送测试
+git add .
+git commit -m "测试自动部署"
+git push origin master
+
+# 检查服务器日志
+sudo tail -f /var/log/blog-deploy.log
+sudo tail -f /var/log/webhook.log
+```
+
+### 🔧 高级配置
+
+#### 使用GitHub Actions（推荐）
+
+创建 `.github/workflows/deploy.yml`：
+
+```yaml
+name: Deploy Blog
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: |
+        cd anzhiyu-blog
+        npm install
+
+    - name: Build blog
+      run: |
+        cd anzhiyu-blog
+        npm run build
+
+    - name: Deploy to server
+      uses: appleboy/ssh-action@v0.1.5
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        script: |
+          cd /opt
+          sudo ./server-deploy.sh
+```
+
+#### 使用Docker部署
+
+创建 `Dockerfile`：
+
+```dockerfile
+FROM node:16-alpine
+
+WORKDIR /app
+COPY anzhiyu-blog/package*.json ./
+RUN npm install --production
+
+COPY anzhiyu-blog/ .
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=0 /app/public /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+### 📊 监控和维护
+
+#### 日志监控
+
+```bash
+# 实时查看部署日志
+sudo tail -f /var/log/blog-deploy.log
+
+# 查看Webhook日志
+sudo tail -f /var/log/webhook.log
+
+# 查看Nginx访问日志
+sudo tail -f /var/log/nginx/access.log
+```
+
+#### 定期维护
+
+```bash
+# 创建定时任务清理旧备份
+sudo crontab -e
+
+# 添加以下行（每天凌晨2点清理7天前的备份）
+0 2 * * * find /var/backups/blog -name "blog-backup-*" -type d -mtime +7 -exec rm -rf {} \;
+```
+
 ## 许可证
 
 MIT License
