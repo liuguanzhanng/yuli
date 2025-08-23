@@ -73,23 +73,14 @@ jobs:
             exit 1
           fi
 
-      # 准备 SSH
-      - name: Prepare SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          echo "Host ${{ secrets.SSH_HOST }}" >> ~/.ssh/config
-          echo "  StrictHostKeyChecking no" >> ~/.ssh/config
-          echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
-          chmod 600 ~/.ssh/config
-
       # 部署到服务器
       - name: Deploy to server
-        run: |
-          rsync -avz --delete \
-            -e "ssh -p ${{ secrets.SSH_PORT }}" \
-            --exclude '.git*' \
-            --exclude 'node_modules' \
-            --exclude '.github' \
-            "${{ env.OUT_DIR }}/" "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.TARGET_DIR }}/"
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr --delete --exclude='.git*' --exclude='node_modules' --exclude='.github'
+          path: ${{ env.OUT_DIR }}/
+          remote_path: ${{ secrets.TARGET_DIR }}
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_port: ${{ secrets.SSH_PORT }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
