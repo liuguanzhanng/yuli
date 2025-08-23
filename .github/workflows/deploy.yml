@@ -1,120 +1,87 @@
-name: Auto Deploy Blog
+name: Build & Deploy Hexo Blog
 
 on:
   push:
-    branches: [ master, main ]
-  pull_request:
-    branches: [ master, main ]
+    branches: ["main", "master"]
+  workflow_dispatch:
+
+env:
+  SSH_HOST: ${{ secrets.SSH_HOST }}
+  SSH_USER: ${{ secrets.SSH_USER }}
+  SSH_PORT: ${{ secrets.SSH_PORT }}
+  TARGET_DIR: ${{ secrets.TARGET_DIR }}
 
 jobs:
-  # 构建和测试任务
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: anzhiyu-blog/package-lock.json
-        
-    - name: Install dependencies
-      run: |
-        cd anzhiyu-blog
-        npm ci
-        
-    - name: Build blog
-      run: |
-        cd anzhiyu-blog
-        npm run clean
-        npm run build
-        
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: blog-build
-        path: anzhiyu-blog/public/
-        retention-days: 1
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
 
-  # 部署任务（仅在推送到master/main分支时执行）
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
-    
-    steps:
-    - name: Download build artifacts
-      uses: actions/download-artifact@v3
-      with:
-        name: blog-build
-        path: ./public
-        
-    - name: Deploy to server via SSH
-      uses: appleboy/ssh-action@v0.1.7
-      with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USER }}
-        key: ${{ secrets.SERVER_SSH_KEY }}
-        port: ${{ secrets.SERVER_PORT || 22 }}
-        script: |
-          echo "开始自动部署..."
-          cd /opt
-          sudo ./server-deploy.sh
-          echo "部署完成！"
-          
-    - name: Deploy to server via rsync (alternative)
-      if: false  # 设置为true来启用rsync部署
-      uses: burnett01/rsync-deployments@5.2
-      with:
-        switches: -avzr --delete
-        path: ./public/
-        remote_path: /var/www/html/blog/
-        remote_host: ${{ secrets.SERVER_HOST }}
-        remote_user: ${{ secrets.SERVER_USER }}
-        remote_key: ${{ secrets.SERVER_SSH_KEY }}
-        
-    - name: Notify deployment status
-      if: always()
-      uses: 8398a7/action-slack@v3
-      with:
-        status: ${{ job.status }}
-        text: |
-          博客部署${{ job.status == 'success' && '成功' || '失败' }}！
-          分支: ${{ github.ref }}
-          提交: ${{ github.sha }}
-          作者: ${{ github.actor }}
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      continue-on-error: true
+      # 检测包管理器
+      - name: Detect package manager
+        id: pm
+        run: |
+          if [ -f pnpm-lock.yaml ]; then echo "pm=pnpm" >> $GITHUB_OUTPUT
+          elif [ -f yarn.lock ]; then echo "pm=yarn" >> $GITHUB_OUTPUT
+          elif [ -f package-lock.json ]; then echo "pm=npm" >> $GITHUB_OUTPUT
+          else echo "pm=npm" >> $GITHUB_OUTPUT; fi
 
-  # 通知任务
-  notify:
-    needs: [build, deploy]
-    runs-on: ubuntu-latest
-    if: always()
-    
-    steps:
-    - name: Send email notification
-      if: failure()
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: smtp.gmail.com
-        server_port: 587
-        username: ${{ secrets.EMAIL_USERNAME }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: "博客部署失败通知"
-        body: |
-          博客自动部署失败！
-          
-          仓库: ${{ github.repository }}
-          分支: ${{ github.ref }}
-          提交: ${{ github.sha }}
-          作者: ${{ github.actor }}
-          
-          请检查GitHub Actions日志获取详细信息。
-        to: ${{ secrets.NOTIFICATION_EMAIL }}
-        from: GitHub Actions
+      # 设置 Node.js 环境
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: ${{ steps.pm.outputs.pm }}
+
+      # 安装依赖和构建
+      - name: Install dependencies and build
+        run: |
+          set -e
+          # 安装依赖
+          if [ "${{ steps.pm.outputs.pm }}" = "pnpm" ]; then
+            npm install -g pnpm
+            pnpm install --frozen-lockfile
+          elif [ "${{ steps.pm.outputs.pm }}" = "yarn" ]; then
+            yarn install --frozen-lockfile
+          else
+            npm ci
+          fi
+
+          # 构建 Hexo 博客
+          if [ "${{ steps.pm.outputs.pm }}" = "pnpm" ]; then
+            pnpm run clean
+            pnpm run build
+          elif [ "${{ steps.pm.outputs.pm }}" = "yarn" ]; then
+            yarn clean
+            yarn build
+          else
+            npm run clean
+            npm run build
+          fi
+
+          # 检查构建输出目录
+          if [ -d "public" ]; then
+            echo "OUT_DIR=public" >> $GITHUB_ENV
+          else
+            echo "Build output directory not found!"
+            exit 1
+          fi
+
+      # 准备 SSH
+      - name: Prepare SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts
+
+      # 部署到服务器
+      - name: Deploy to server
+        run: |
+          rsync -avz --delete \
+            --exclude '.git*' \
+            --exclude 'node_modules' \
+            --exclude '.github' \
+            "${{ env.OUT_DIR }}/" "${SSH_USER}@${SSH_HOST}:${TARGET_DIR}/"
