@@ -1,6 +1,7 @@
 ---
 title: AI摘要功能优化记录
 date: 2025-01-23
+updated: 2025-01-23 22:30:00
 ai: true
 categories:
 - 技术
