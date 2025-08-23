@@ -23,6 +23,8 @@
   let summaryID = null;
 
   const post_ai = document.querySelector(".post-ai-description");
+  if (!post_ai) return; // 如果没有AI摘要元素，直接退出
+
   const aiTitleRefreshIcon = post_ai.querySelector(".ai-title .anzhiyufont.anzhiyu-icon-arrow-rotate-right");
   let aiReadAloudIcon = post_ai.querySelector(".anzhiyu-icon-circle-dot");
   const explanation = post_ai.querySelector(".ai-explanation");
@@ -95,8 +97,6 @@
       body: JSON.stringify(requestBody),
     };
 
-    console.info("文章内容长度:", truncateDescription.length);
-    
     try {
       let animationInterval = null;
       let summary;
@@ -109,7 +109,7 @@
 
       const response = await fetch(openaiConfig.apiUrl, requestOptions);
       let result;
-      
+
       if (response.status === 401) {
         result = { error: "401 API Key 无效或已过期" };
       } else if (response.status === 429) {
@@ -142,7 +142,11 @@
       clearInterval(animationInterval);
     } catch (error) {
       console.error("OpenAI API 调用错误:", error);
+      clearInterval(animationInterval);
       explanation.innerHTML = "网络错误: " + error.message;
+      setTimeout(() => {
+        aiTitleRefreshIcon.style.opacity = "1";
+      }, 300);
     }
   }
 
@@ -159,28 +163,65 @@
 
   // 其他必要的函数（从原文件复制）
   function createIntersectionObserver() {
-    return new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && !animationRunning) {
-          animationRunning = true;
-          animate();
+    return new IntersectionObserver(
+      entries => {
+        let isVisible = entries[0].isIntersecting;
+        animationRunning = isVisible;
+        if (animationRunning) {
+          delayInit = indexI === 0 ? 200 : 20;
+          timeouts[1] = setTimeout(() => {
+            if (indexJ) {
+              indexI = 0;
+              indexJ = 0;
+            }
+            if (indexI === 0) {
+              explanation.innerHTML = aiStr.charAt(0);
+            }
+            requestAnimationFrame(animate);
+          }, delayInit);
         }
-      });
-    });
+      },
+      { threshold: 0 }
+    );
   }
 
-  function animate() {
-    if (indexI < aiStrLength) {
-      explanation.innerHTML = aiStr.substring(0, indexI + 1) + (indexI + 1 < aiStrLength ? "_" : "");
-      indexI++;
-      const delay = Math.random() * 100 + 50;
-      timeouts[0] = setTimeout(() => {
-        requestAnimationFrame(animate);
-      }, delay);
+  function animate(timestamp) {
+    if (!animationRunning) {
+      return;
+    }
+    if (!animate.start) animate.start = timestamp;
+    elapsed = timestamp - animate.start;
+    if (elapsed >= 20) {
+      animate.start = timestamp;
+      if (indexI < aiStrLength - 1) {
+        let char = aiStr.charAt(indexI + 1);
+        let delay = /[,.，。!?！？]/.test(char) ? 150 : 20;
+        if (explanation.firstElementChild) {
+          explanation.removeChild(explanation.firstElementChild);
+        }
+        explanation.innerHTML += char;
+        let div = document.createElement("div");
+        div.className = "ai-cursor";
+        explanation.appendChild(div);
+        indexI++;
+        if (delay === 150) {
+          const cursor = post_ai.querySelector(".ai-explanation .ai-cursor");
+          if (cursor) cursor.style.opacity = "0.2";
+        }
+        if (indexI === aiStrLength - 1) {
+          observer.disconnect();
+          animationRunning = false;
+          if (explanation.firstElementChild) {
+            explanation.removeChild(explanation.firstElementChild);
+          }
+          return;
+        }
+        timeouts[0] = setTimeout(() => {
+          requestAnimationFrame(animate);
+        }, delay);
+      }
     } else {
-      // 动画完成，移除光标
-      explanation.innerHTML = aiStr;
-      animationRunning = false;
+      requestAnimationFrame(animate);
     }
   }
 
@@ -188,17 +229,13 @@
     indexI = 0;
     indexJ = 1;
     clearTimeouts();
-    animationRunning = true;
+    animationRunning = false;
     elapsed = 0;
     observer.disconnect();
     explanation.innerHTML = df ? "生成中. . ." : "请等待. . .";
     aiStr = str;
     aiStrLength = aiStr.length;
-
-    // 直接开始动画，不依赖 IntersectionObserver
-    setTimeout(() => {
-      animate();
-    }, 500);
+    observer.observe(post_ai);
   }
 
   function introduce() {
@@ -239,18 +276,38 @@
           clearTimeout(item);
         }
       });
+      timeouts = []; // 清空数组
     }
   }
 
   function onAiTitleRefreshIconClick() {
-    aiAbstract();
+    const truncateDescription = (title + pageFillDescription).trim().substring(0, basicWordCount);
+
+    aiTitleRefreshIcon.style.opacity = "0.2";
+    aiTitleRefreshIcon.style.transitionDuration = "0.3s";
+    aiTitleRefreshIcon.style.transform = "rotate(" + 360 * refreshNum + "deg)";
+    if (truncateDescription.length <= basicWordCount) {
+      let param = truncateDescription.length - Math.floor(Math.random() * randomNum);
+      while (param === prevParam || truncateDescription.length - param === prevParam) {
+        param = truncateDescription.length - Math.floor(Math.random() * randomNum);
+      }
+      prevParam = param;
+      aiAbstract(param);
+    } else {
+      let value = Math.floor(Math.random() * randomNum) + basicWordCount;
+      while (value === prevParam || truncateDescription.length - value === prevParam) {
+        value = Math.floor(Math.random() * randomNum) + basicWordCount;
+      }
+      aiAbstract(value);
+    }
+    refreshNum++;
   }
 
   function aiAbstractLocal() {
     startAI("本地模式暂未实现，请使用 OpenAI 模式");
   }
 
-  async function aiAbstractTianli(num) {
+  async function aiAbstractTianli() {
     startAI("Tianli 模式暂未配置，请使用 OpenAI 模式");
   }
 
@@ -275,12 +332,8 @@
 
   // 初始化
   if (post_ai) {
-    console.log("AI 摘要模块初始化中...");
-    console.log("配置信息:", { mode, gptName, openaiConfig });
     setTimeout(() => {
       introduce();
     }, 1000);
-  } else {
-    console.error("未找到 .post-ai-description 元素");
   }
 })();
