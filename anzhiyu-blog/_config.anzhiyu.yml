@@ -1232,9 +1232,9 @@ post_head_ai_description:
   basicWordCount: 1000 # 最低获取字符数, 最小1000, 最大1999
   # OpenAI 兼容配置
   openai:
-    apiKey: sk-iBJhbtERdjXqZzx0zHl0zuCEa62kOOD6rd7HQj6OmQpd8Kqb # 请替换为您的 OpenAI 兼容 API Key
-    apiUrl: https://tbai.xin/v1/chat/completions # 请替换为您的 OpenAI 兼容 API 端点
-    model: gpt-4.1-mini # 使用的模型名称，如: gpt-3.5-turbo, gpt-4, claude-3-sonnet 等
+    apiKey: sk-vqsjfmsghbbfebqjuqcbzaapvgwrlglvaenqbtqzoirerahr # 请替换为您的 OpenAI 兼容 API Key
+    apiUrl: https://api.siliconflow.cn/v1/chat/completions # 请替换为您的 OpenAI 兼容 API 端点
+    model: Qwen/Qwen3-30B-A3B # 使用的模型名称，如: gpt-3.5-turbo, gpt-4, claude-3-sonnet 等
     maxTokens: 500 # 摘要最大 token 数
     temperature: 0.7 # 创造性参数 0-1，数值越高越有创造性
     systemPrompt: "你是一个专业的技术博客文章摘要助手。请为以下文章生成一个简洁、准确的中文摘要，突出文章的核心内容和技术要点。摘要应该在100-200字之间，语言要通俗易懂。"
