@@ -104,29 +104,29 @@ jobs:
             exit 1
           fi
 
-      # 部署完整仓库到服务器
-      - name: Deploy full repository to server
-        uses: burnett01/rsync-deployments@6.0.0
-        with:
-          switches: -avzr --delete --exclude='.git*' --exclude='anzhiyu-blog/node_modules' --exclude='*.log'
-          path: ./
-          remote_path: ${{ secrets.TARGET_DIR }}/
-          remote_host: ${{ secrets.SSH_HOST }}
-          remote_port: ${{ secrets.SSH_PORT }}
-          remote_user: ${{ secrets.SSH_USER }}
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+      # 清理目标目录并部署完整仓库
+      - name: Clean and deploy full repository
+        run: |
+          # 创建临时SSH配置
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
 
-      # 部署构建后的博客文件到web目录
-      - name: Deploy built blog to web directory
-        uses: burnett01/rsync-deployments@6.0.0
-        with:
-          switches: -avzr --delete
-          path: ${{ env.OUT_DIR }}/
-          remote_path: ${{ secrets.TARGET_DIR }}/web/
-          remote_host: ${{ secrets.SSH_HOST }}
-          remote_port: ${{ secrets.SSH_PORT }}
-          remote_user: ${{ secrets.SSH_USER }}
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # 清理目标目录
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "rm -rf ${{ secrets.TARGET_DIR }}/* && mkdir -p ${{ secrets.TARGET_DIR }}/web"
+
+          # 部署完整仓库
+          rsync -avzr --exclude='.git*' --exclude='anzhiyu-blog/node_modules' --exclude='anzhiyu-blog/public' --exclude='*.log' \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }}" \
+            ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.TARGET_DIR }}/
+
+          # 部署构建后的网站文件
+          rsync -avzr --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }}" \
+            ${{ env.OUT_DIR }}/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.TARGET_DIR }}/web/
+
+          # 清理SSH密钥
+          rm ~/.ssh/deploy_key
 
       # 部署后验证
       - name: Post-deployment verification
