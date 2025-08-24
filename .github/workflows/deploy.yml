@@ -15,19 +15,30 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           submodules: false
+          fetch-depth: 0
 
       # 检测包管理器
       - name: Detect package manager
         id: pm
         run: |
           cd anzhiyu-blog
-          if [ -f pnpm-lock.yaml ]; then echo "pm=pnpm" >> $GITHUB_OUTPUT
-          elif [ -f yarn.lock ]; then echo "pm=yarn" >> $GITHUB_OUTPUT
-          elif [ -f package-lock.json ]; then echo "pm=npm" >> $GITHUB_OUTPUT
-          else echo "pm=npm" >> $GITHUB_OUTPUT; fi
+          if [ -f pnpm-lock.yaml ]; then
+            echo "pm=pnpm" >> $GITHUB_OUTPUT
+            echo "cache-path=anzhiyu-blog/pnpm-lock.yaml" >> $GITHUB_OUTPUT
+          elif [ -f yarn.lock ]; then
+            echo "pm=yarn" >> $GITHUB_OUTPUT
+            echo "cache-path=anzhiyu-blog/yarn.lock" >> $GITHUB_OUTPUT
+          elif [ -f package-lock.json ]; then
+            echo "pm=npm" >> $GITHUB_OUTPUT
+            echo "cache-path=anzhiyu-blog/package-lock.json" >> $GITHUB_OUTPUT
+          else
+            echo "pm=npm" >> $GITHUB_OUTPUT
+            echo "cache-path=anzhiyu-blog/package.json" >> $GITHUB_OUTPUT
+          fi
 
       # 设置 Node.js 环境
       - name: Setup Node.js
@@ -35,15 +46,16 @@ jobs:
         with:
           node-version: '18'
           cache: ${{ steps.pm.outputs.pm }}
-          cache-dependency-path: 'anzhiyu-blog/package-lock.json'
+          cache-dependency-path: ${{ steps.pm.outputs.cache-path }}
 
-      # 安装依赖和构建
-      - name: Install dependencies and build
+      # 安装依赖
+      - name: Install dependencies
         run: |
           set -e
           cd anzhiyu-blog
 
-          # 安装依赖
+          echo "📦 Installing dependencies with ${{ steps.pm.outputs.pm }}..."
+
           if [ "${{ steps.pm.outputs.pm }}" = "pnpm" ]; then
             npm install -g pnpm
             pnpm install --frozen-lockfile
@@ -53,34 +65,72 @@ jobs:
             npm ci
           fi
 
-          # 构建 Hexo 博客
+      # 构建博客
+      - name: Build Hexo blog
+        run: |
+          set -e
+          cd anzhiyu-blog
+
+          echo "🏗️ Building Hexo blog..."
+
+          # 清理缓存
           if [ "${{ steps.pm.outputs.pm }}" = "pnpm" ]; then
             pnpm run clean
-            pnpm run build
           elif [ "${{ steps.pm.outputs.pm }}" = "yarn" ]; then
             yarn clean
-            yarn build
           else
             npm run clean
+          fi
+
+          # 构建静态文件
+          if [ "${{ steps.pm.outputs.pm }}" = "pnpm" ]; then
+            pnpm run build
+          elif [ "${{ steps.pm.outputs.pm }}" = "yarn" ]; then
+            yarn build
+          else
             npm run build
           fi
 
-          # 检查构建输出目录
-          if [ -d "public" ]; then
+      # 验证构建结果
+      - name: Verify build output
+        run: |
+          cd anzhiyu-blog
+          if [ -d "public" ] && [ "$(ls -A public)" ]; then
+            echo "✅ Build successful! Files generated:"
+            ls -la public/ | head -10
             echo "OUT_DIR=anzhiyu-blog/public" >> $GITHUB_ENV
           else
-            echo "Build output directory not found!"
+            echo "❌ Build failed: public directory is empty or doesn't exist!"
             exit 1
           fi
 
-      # 部署到服务器
-      - name: Deploy to server
+      # 部署完整仓库到服务器
+      - name: Deploy full repository to server
         uses: burnett01/rsync-deployments@6.0.0
         with:
-          switches: -avzr --delete --exclude='.git*' --exclude='node_modules' --exclude='.github'
-          path: ${{ env.OUT_DIR }}/
-          remote_path: ${{ secrets.TARGET_DIR }}
+          switches: -avzr --delete --exclude='.git*' --exclude='anzhiyu-blog/node_modules' --exclude='*.log'
+          path: ./
+          remote_path: ${{ secrets.TARGET_DIR }}/
           remote_host: ${{ secrets.SSH_HOST }}
           remote_port: ${{ secrets.SSH_PORT }}
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # 部署构建后的博客文件到web目录
+      - name: Deploy built blog to web directory
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr --delete
+          path: ${{ env.OUT_DIR }}/
+          remote_path: ${{ secrets.TARGET_DIR }}/web/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_port: ${{ secrets.SSH_PORT }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # 部署后验证
+      - name: Post-deployment verification
+        run: |
+          echo "🎉 Deployment completed!"
+          echo "📍 Blog should be accessible at: http://${{ secrets.SSH_HOST }}"
+          echo "📁 Files deployed to: ${{ secrets.TARGET_DIR }}"
