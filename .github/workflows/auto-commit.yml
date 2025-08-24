@@ -37,7 +37,7 @@ jobs:
         run: |
           git add .
           git commit -m "${{ github.event.inputs.commit_message }}"
-          git push origin main
+          git push origin master
 
       - name: No changes detected
         if: steps.verify-changed-files.outputs.changed == 'false'

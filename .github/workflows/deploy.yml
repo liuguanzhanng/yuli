@@ -2,7 +2,7 @@ name: Build & Deploy Hexo Blog
 
 on:
   push:
-    branches: ["main", "master"]
+    branches: ["master"]
   workflow_dispatch:
 
 env:
