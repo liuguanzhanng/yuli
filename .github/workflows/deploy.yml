@@ -113,7 +113,7 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
 
           # 清理目标目录
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "rm -rf ${{ secrets.TARGET_DIR }}/* && mkdir -p ${{ secrets.TARGET_DIR }}/web"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "rm -rf ${{ secrets.TARGET_DIR }}/web/* && mkdir -p ${{ secrets.TARGET_DIR }}/web"
 
           # 部署完整仓库
           rsync -avzr --exclude='.git*' --exclude='anzhiyu-blog/node_modules' --exclude='anzhiyu-blog/public' --exclude='*.log' \

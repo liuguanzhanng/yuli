@@ -2,6 +2,7 @@
 categories:
 - 技巧
 cover: https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=2025&q=80
+main_color: '#2a6973'
 date: 2025-08-14
 description: 欢迎来到 Hexo！这是你的第一篇文章，让我们开始这段美妙的博客之旅。
 tags:
