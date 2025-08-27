@@ -1,46 +1,50 @@
-# .github/workflows/deploy.yml
-
-name: Deploy Blog to VPS
+name: Sync public to VPS
 
 on:
   push:
-    branches:
-      - master # 确保这是你的主分支名
+    branches: [ master ]
+    paths:
+      - 'anzhiyu-blog/public/**'   # 只有 public 有变更才触发
+  workflow_dispatch: {}            # 支持手动触发
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      # 1. 拉取代码
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          submodules: true
+          fetch-depth: 0
+          lfs: true                 # 如果 public 里有大文件且使用了 LFS
 
-      # 2. 安装 Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Ensure target dir
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          node-version: '18'
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            mkdir -p /var/www/anzhiyu-blog
 
-      # 3. 进入 anzhiyu-blog 目录并安装依赖
-      - name: Install Dependencies
-        working-directory: ./anzhiyu-blog
-        run: npm install
-
-      # 4. 生成静态文件
-      - name: Build Hexo
-        working-directory: ./anzhiyu-blog
-        run: npx hexo generate
-
-      # 5. 部署到 VPS
-      - name: Deploy to VPS
+      - name: Sync public (rsync)
         uses: easingthemes/ssh-deploy@v4.1.10
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SOURCE: "anzhiyu-blog/public/"
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_USER: ${{ secrets.SSH_USER }}
-          TARGET: /var/www/anzhiyu-blog
-          ARGS: "--delete"
+          REMOTE_PORT: ${{ secrets.SSH_PORT }}
+          SOURCE: "anzhiyu-blog/public/"
+          TARGET: "/var/www/anzhiyu-blog/"
+          ARGS: "-avz --delete"
+          # 可选：忽略某些文件
+          # EXCLUDE: ".DS_Store"
+      # 可选：如果你想热加载反代（一般纯静态不需要）
+      # - name: Reload nginx proxy
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USER }}
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     port: ${{ secrets.SSH_PORT }}
+      #     script: docker exec nginx-proxy nginx -s reload || true
