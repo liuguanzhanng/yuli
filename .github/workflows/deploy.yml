@@ -1,136 +1,46 @@
-name: Build & Deploy Hexo Blog
+# .github/workflows/deploy.yml
+
+name: Deploy Blog to VPS
 
 on:
   push:
-    branches: ["master"]
-  workflow_dispatch:
-
-env:
-  SSH_HOST: ${{ secrets.SSH_HOST }}
-  SSH_USER: ${{ secrets.SSH_USER }}
-  SSH_PORT: ${{ secrets.SSH_PORT }}
-  TARGET_DIR: ${{ secrets.TARGET_DIR }}
+    branches:
+      - master # 确保这是你的主分支名
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # 1. 拉取代码
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
-          submodules: false
-          fetch-depth: 0
+          submodules: true
 
-      # 检测包管理器
-      - name: Detect package manager
-        id: pm
-        run: |
-          cd anzhiyu-blog
-          if [ -f pnpm-lock.yaml ]; then
-            echo "pm=pnpm" >> $GITHUB_OUTPUT
-            echo "cache-path=anzhiyu-blog/pnpm-lock.yaml" >> $GITHUB_OUTPUT
-          elif [ -f yarn.lock ]; then
-            echo "pm=yarn" >> $GITHUB_OUTPUT
-            echo "cache-path=anzhiyu-blog/yarn.lock" >> $GITHUB_OUTPUT
-          elif [ -f package-lock.json ]; then
-            echo "pm=npm" >> $GITHUB_OUTPUT
-            echo "cache-path=anzhiyu-blog/package-lock.json" >> $GITHUB_OUTPUT
-          else
-            echo "pm=npm" >> $GITHUB_OUTPUT
-            echo "cache-path=anzhiyu-blog/package.json" >> $GITHUB_OUTPUT
-          fi
-
-      # 设置 Node.js 环境
+      # 2. 安装 Node.js
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
-          cache: ${{ steps.pm.outputs.pm }}
-          cache-dependency-path: ${{ steps.pm.outputs.cache-path }}
 
-      # 安装依赖
-      - name: Install dependencies
-        run: |
-          set -e
-          cd anzhiyu-blog
+      # 3. 进入 anzhiyu-blog 目录并安装依赖
+      - name: Install Dependencies
+        working-directory: ./anzhiyu-blog
+        run: npm install
 
-          echo "📦 Installing dependencies with ${{ steps.pm.outputs.pm }}..."
+      # 4. 生成静态文件
+      - name: Build Hexo
+        working-directory: ./anzhiyu-blog
+        run: npx hexo generate
 
-          if [ "${{ steps.pm.outputs.pm }}" = "pnpm" ]; then
-            npm install -g pnpm
-            pnpm install --frozen-lockfile
-          elif [ "${{ steps.pm.outputs.pm }}" = "yarn" ]; then
-            yarn install --frozen-lockfile
-          else
-            npm ci
-          fi
-
-      # 构建博客
-      - name: Build Hexo blog
-        run: |
-          set -e
-          cd anzhiyu-blog
-
-          echo "🏗️ Building Hexo blog..."
-
-          # 清理缓存
-          if [ "${{ steps.pm.outputs.pm }}" = "pnpm" ]; then
-            pnpm run clean
-          elif [ "${{ steps.pm.outputs.pm }}" = "yarn" ]; then
-            yarn clean
-          else
-            npm run clean
-          fi
-
-          # 构建静态文件
-          if [ "${{ steps.pm.outputs.pm }}" = "pnpm" ]; then
-            pnpm run build
-          elif [ "${{ steps.pm.outputs.pm }}" = "yarn" ]; then
-            yarn build
-          else
-            npm run build
-          fi
-
-      # 验证构建结果
-      - name: Verify build output
-        run: |
-          cd anzhiyu-blog
-          if [ -d "public" ] && [ "$(ls -A public)" ]; then
-            echo "✅ Build successful! Files generated:"
-            ls -la public/ | head -10
-            echo "OUT_DIR=anzhiyu-blog/public" >> $GITHUB_ENV
-          else
-            echo "❌ Build failed: public directory is empty or doesn't exist!"
-            exit 1
-          fi
-
-      # 清理目标目录并部署完整仓库
-      - name: Clean and deploy full repository
-        run: |
-          # 创建临时SSH配置
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-
-          # 清理目标目录
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "rm -rf ${{ secrets.TARGET_DIR }}/web/* && mkdir -p ${{ secrets.TARGET_DIR }}/web"
-
-          # 部署完整仓库
-          rsync -avzr --exclude='.git*' --exclude='anzhiyu-blog/node_modules' --exclude='anzhiyu-blog/public' --exclude='*.log' \
-            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }}" \
-            ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.TARGET_DIR }}/
-
-          # 部署构建后的网站文件
-          rsync -avzr --delete \
-            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }}" \
-            ${{ env.OUT_DIR }}/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.TARGET_DIR }}/web/
-
-          # 清理SSH密钥
-          rm ~/.ssh/deploy_key
-
-      # 部署后验证
-      - name: Post-deployment verification
-        run: |
-          echo "🎉 Deployment completed!"
-          echo "📍 Blog should be accessible at: http://${{ secrets.SSH_HOST }}"
-          echo "📁 Files deployed to: ${{ secrets.TARGET_DIR }}"
+      # 5. 部署到 VPS
+      - name: Deploy to VPS
+        uses: easingthemes/ssh-deploy@v4.1.10
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+          SOURCE: "anzhiyu-blog/public/"
+          REMOTE_HOST: ${{ secrets.VPS_HOST }}
+          REMOTE_USER: ${{ secrets.VPS_USER }}
+          TARGET: /var/www/anzhiyu-blog
+          ARGS: "--delete"
