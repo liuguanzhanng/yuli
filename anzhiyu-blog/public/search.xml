@@ -1,0 +1,869 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>AI摘要功能优化记录</title>
+    <url>/2025/01/23/AI%E6%91%98%E8%A6%81%E5%8A%9F%E8%83%BD%E4%BC%98%E5%8C%96%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h1 id="AI摘要功能优化记录"><a href="#AI摘要功能优化记录" class="headerlink" title="AI摘要功能优化记录"></a>AI摘要功能优化记录</h1><p>最近在优化博客的AI摘要功能时，遇到了一个有趣的问题：AI生成的摘要在显示时会出现截断现象，有时能完整显示，有时只显示一半就停止了。经过深入排查和修复，现在将整个过程记录下来，希望能对遇到类似问题的朋友有所帮助。</p>
+<h2 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h2><h3 id="🐛-主要症状"><a href="#🐛-主要症状" class="headerlink" title="🐛 主要症状"></a>🐛 <strong>主要症状</strong></h3><ul>
+<li>AI摘要的打字机动画效果会在中途停止</li>
+<li>有时能完整显示，有时只显示一半内容</li>
+<li>问题具有间歇性，难以稳定复现</li>
+<li>控制台没有明显的错误信息</li>
+</ul>
+<h3 id="🔍-初步分析"><a href="#🔍-初步分析" class="headerlink" title="🔍 初步分析"></a>🔍 <strong>初步分析</strong></h3><p>这种间歇性的截断问题通常有几个可能的原因：</p>
+<ol>
+<li><strong>前端动画逻辑问题</strong> - 动画状态管理错误</li>
+<li><strong>API响应问题</strong> - 网络请求被截断或超时</li>
+<li><strong>竞态条件</strong> - 多个动画同时运行导致冲突</li>
+<li><strong>浏览器兼容性</strong> - 不同浏览器的实现差异</li>
+</ol>
+<h2 id="排查过程"><a href="#排查过程" class="headerlink" title="排查过程"></a>排查过程</h2><h3 id="第一步：添加调试信息"><a href="#第一步：添加调试信息" class="headerlink" title="第一步：添加调试信息"></a>第一步：添加调试信息</h3><p>首先在关键函数中添加了详细的调试日志：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;API 返回摘要长度:&quot;</span>, summary.<span class="property">length</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;动画开始，字符串长度:&quot;</span>, aiStr.<span class="property">length</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;动画完成，最终显示字符数:&quot;</span>, displayedLength);</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二步：对比原版逻辑"><a href="#第二步：对比原版逻辑" class="headerlink" title="第二步：对比原版逻辑"></a>第二步：对比原版逻辑</h3><p>通过对比原版 <code>ai_abstract.js</code> 和 OpenAI 版本的实现，发现了几个关键差异：</p>
+<ol>
+<li><p><strong>动画函数实现不同</strong></p>
+<ul>
+<li>原版使用复杂的逐字符动画逻辑</li>
+<li>OpenAI版本使用了简化的 <code>substring</code> 方法</li>
+</ul>
+</li>
+<li><p><strong>IntersectionObserver 处理不完整</strong></p>
+<ul>
+<li>缺少正确的第一个字符初始化</li>
+<li>动画状态管理不一致</li>
+</ul>
+</li>
+</ol>
+<h3 id="第三步：定位核心问题"><a href="#第三步：定位核心问题" class="headerlink" title="第三步：定位核心问题"></a>第三步：定位核心问题</h3><p>经过详细分析，发现主要问题出在动画逻辑的几个方面：</p>
+<h4 id="🔧-动画索引管理错误"><a href="#🔧-动画索引管理错误" class="headerlink" title="🔧 动画索引管理错误"></a>🔧 <strong>动画索引管理错误</strong></h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 问题代码</span></span><br><span class="line"><span class="keyword">if</span> (indexI &lt; aiStrLength) &#123;</span><br><span class="line">  <span class="keyword">let</span> char = aiStr.<span class="title function_">charAt</span>(indexI + <span class="number">1</span>); <span class="comment">// 可能越界</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 修复后</span></span><br><span class="line"><span class="keyword">if</span> (indexI &lt; aiStrLength - <span class="number">1</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> char = aiStr.<span class="title function_">charAt</span>(indexI + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="🔧-光标处理逻辑不当"><a href="#🔧-光标处理逻辑不当" class="headerlink" title="🔧 光标处理逻辑不当"></a>🔧 <strong>光标处理逻辑不当</strong></h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 问题：过于严格的检查</span></span><br><span class="line"><span class="keyword">if</span> (explanation.<span class="property">firstElementChild</span> &amp;&amp; </span><br><span class="line">    explanation.<span class="property">firstElementChild</span>.<span class="property">className</span> === <span class="string">&quot;ai-cursor&quot;</span>) &#123;</span><br><span class="line">  explanation.<span class="title function_">removeChild</span>(explanation.<span class="property">firstElementChild</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 修复：简化检查</span></span><br><span class="line"><span class="keyword">if</span> (explanation.<span class="property">firstElementChild</span>) &#123;</span><br><span class="line">  explanation.<span class="title function_">removeChild</span>(explanation.<span class="property">firstElementChild</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="🔧-IntersectionObserver-初始化不完整"><a href="#🔧-IntersectionObserver-初始化不完整" class="headerlink" title="🔧 IntersectionObserver 初始化不完整"></a>🔧 <strong>IntersectionObserver 初始化不完整</strong></h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 修复前：缺少第一个字符的设置</span></span><br><span class="line"><span class="keyword">if</span> (animationRunning) &#123;</span><br><span class="line">  <span class="title function_">requestAnimationFrame</span>(animate);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 修复后：正确初始化</span></span><br><span class="line"><span class="keyword">if</span> (animationRunning) &#123;</span><br><span class="line">  <span class="keyword">if</span> (indexI === <span class="number">0</span>) &#123;</span><br><span class="line">    explanation.<span class="property">innerHTML</span> = aiStr.<span class="title function_">charAt</span>(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">requestAnimationFrame</span>(animate);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="修复方案"><a href="#修复方案" class="headerlink" title="修复方案"></a>修复方案</h2><h3 id="🛠️-核心修复内容"><a href="#🛠️-核心修复内容" class="headerlink" title="🛠️ 核心修复内容"></a>🛠️ <strong>核心修复内容</strong></h3><ol>
+<li><p><strong>统一动画逻辑</strong></p>
+<ul>
+<li>采用与原版完全一致的动画实现</li>
+<li>确保字符索引管理的正确性</li>
+<li>修复光标元素的创建和移除逻辑</li>
+</ul>
+</li>
+<li><p><strong>完善状态管理</strong></p>
+<ul>
+<li>正确处理动画开始和结束状态</li>
+<li>添加必要的安全检查</li>
+<li>优化超时处理机制</li>
+</ul>
+</li>
+<li><p><strong>简化代码结构</strong></p>
+<ul>
+<li>移除冗余的调试信息</li>
+<li>保持代码的简洁性和可维护性</li>
+<li>确保核心功能的稳定性</li>
+</ul>
+</li>
+</ol>
+<h3 id="📊-修复效果验证"><a href="#📊-修复效果验证" class="headerlink" title="📊 修复效果验证"></a>📊 <strong>修复效果验证</strong></h3><p>修复后的效果：</p>
+<ul>
+<li>✅ AI摘要完整显示，无截断现象</li>
+<li>✅ 打字机动画流畅运行</li>
+<li>✅ 标点符号处有适当停顿效果</li>
+<li>✅ 动画结束后正确移除光标</li>
+<li>✅ 支持多次刷新生成新摘要</li>
+</ul>
+<h2 id="技术总结"><a href="#技术总结" class="headerlink" title="技术总结"></a>技术总结</h2><h3 id="💡-经验教训"><a href="#💡-经验教训" class="headerlink" title="💡 经验教训"></a>💡 <strong>经验教训</strong></h3><ol>
+<li><p><strong>动画逻辑的复杂性</strong></p>
+<ul>
+<li>看似简单的打字机效果实际涉及多个状态管理</li>
+<li>字符索引、光标处理、时间控制需要精确协调</li>
+</ul>
+</li>
+<li><p><strong>调试策略的重要性</strong></p>
+<ul>
+<li>间歇性问题需要系统性的调试方法</li>
+<li>对比分析是发现问题的有效手段</li>
+</ul>
+</li>
+<li><p><strong>代码简洁性原则</strong></p>
+<ul>
+<li>过度的调试信息会影响代码可读性</li>
+<li>核心功能应该保持简洁和稳定</li>
+</ul>
+</li>
+</ol>
+<h3 id="🔮-后续优化方向"><a href="#🔮-后续优化方向" class="headerlink" title="🔮 后续优化方向"></a>🔮 <strong>后续优化方向</strong></h3><ol>
+<li><p><strong>性能优化</strong></p>
+<ul>
+<li>考虑使用 CSS 动画替代 JavaScript 动画</li>
+<li>优化大文本的处理性能</li>
+</ul>
+</li>
+<li><p><strong>用户体验提升</strong></p>
+<ul>
+<li>添加动画速度控制选项</li>
+<li>支持暂停&#x2F;继续动画功能</li>
+</ul>
+</li>
+<li><p><strong>错误处理完善</strong></p>
+<ul>
+<li>添加网络超时重试机制</li>
+<li>优化API错误提示信息</li>
+</ul>
+</li>
+</ol>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这次AI摘要功能的优化过程让我深刻体会到了前端动画开发的细节重要性。一个看似简单的打字机效果，实际上涉及到状态管理、DOM操作、异步处理等多个方面。</p>
+<p>通过系统性的问题排查和修复，不仅解决了截断问题，也让我对JavaScript动画有了更深入的理解。希望这个记录能够帮助到遇到类似问题的开发者们。</p>
+<p>如果你在使用过程中发现任何问题，欢迎在评论区留言讨论！</p>
+<hr>
+<p><em>本文记录了一次完整的问题排查和修复过程，展示了前端开发中调试和优化的实际经验。</em></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>AI</tag>
+        <tag>JavaScript</tag>
+        <tag>博客优化</tag>
+        <tag>动画效果</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Affinity Designer 图标设计教程</title>
+    <url>/2025/04/18/Affinity-Designer%E5%9B%BE%E6%A0%87%E8%AE%BE%E8%AE%A1%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="Affinity-Designer-图标设计教程"><a href="#Affinity-Designer-图标设计教程" class="headerlink" title="Affinity Designer 图标设计教程"></a>Affinity Designer 图标设计教程</h1><p>Affinity Designer 是一款专业的矢量图形设计软件，特别适合图标设计。</p>
+<h2 id="基础设置"><a href="#基础设置" class="headerlink" title="基础设置"></a>基础设置</h2><h3 id="1-新建文档"><a href="#1-新建文档" class="headerlink" title="1. 新建文档"></a>1. 新建文档</h3><ul>
+<li>尺寸：1024x1024px</li>
+<li>DPI：72（屏幕显示）或 300（打印）</li>
+<li>颜色模式：RGB</li>
+</ul>
+<h3 id="2-网格设置"><a href="#2-网格设置" class="headerlink" title="2. 网格设置"></a>2. 网格设置</h3><ul>
+<li>启用网格：View &gt; Show Grid</li>
+<li>网格间距：8px 或 16px</li>
+<li>启用对齐：View &gt; Snap to Grid</li>
+</ul>
+<h2 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h2><h3 id="1-简洁性"><a href="#1-简洁性" class="headerlink" title="1. 简洁性"></a>1. 简洁性</h3><p>图标应该简洁明了，避免过多细节</p>
+<h3 id="2-一致性"><a href="#2-一致性" class="headerlink" title="2. 一致性"></a>2. 一致性</h3><p>保持相同的设计风格和视觉重量</p>
+<h3 id="3-可识别性"><a href="#3-可识别性" class="headerlink" title="3. 可识别性"></a>3. 可识别性</h3><p>确保图标在小尺寸下仍然清晰可辨</p>
+<h2 id="实战案例：设计一个文件夹图标"><a href="#实战案例：设计一个文件夹图标" class="headerlink" title="实战案例：设计一个文件夹图标"></a>实战案例：设计一个文件夹图标</h2><h3 id="步骤-1：基础形状"><a href="#步骤-1：基础形状" class="headerlink" title="步骤 1：基础形状"></a>步骤 1：基础形状</h3><ol>
+<li>使用矩形工具创建文件夹主体</li>
+<li>添加圆角（半径：8px）</li>
+<li>创建文件夹标签页</li>
+</ol>
+<h3 id="步骤-2：添加细节"><a href="#步骤-2：添加细节" class="headerlink" title="步骤 2：添加细节"></a>步骤 2：添加细节</h3><ol>
+<li>使用渐变填充增加立体感</li>
+<li>添加阴影效果</li>
+<li>调整透明度和混合模式</li>
+</ol>
+<h3 id="步骤-3：颜色搭配"><a href="#步骤-3：颜色搭配" class="headerlink" title="步骤 3：颜色搭配"></a>步骤 3：颜色搭配</h3><ol>
+<li>主色：#4A90E2</li>
+<li>阴影：#2C5282</li>
+<li>高光：#63B3ED</li>
+</ol>
+<h3 id="步骤-4：导出设置"><a href="#步骤-4：导出设置" class="headerlink" title="步骤 4：导出设置"></a>步骤 4：导出设置</h3><ol>
+<li>格式：PNG、SVG</li>
+<li>尺寸：16px、32px、64px、128px</li>
+<li>优化：启用压缩</li>
+</ol>
+<h2 id="高级技巧"><a href="#高级技巧" class="headerlink" title="高级技巧"></a>高级技巧</h2><h3 id="1-使用符号库"><a href="#1-使用符号库" class="headerlink" title="1. 使用符号库"></a>1. 使用符号库</h3><p>创建可重复使用的设计元素</p>
+<h3 id="2-批量导出"><a href="#2-批量导出" class="headerlink" title="2. 批量导出"></a>2. 批量导出</h3><p>设置多种尺寸的导出预设</p>
+<h3 id="3-颜色管理"><a href="#3-颜色管理" class="headerlink" title="3. 颜色管理"></a>3. 颜色管理</h3><p>建立统一的色彩调色板</p>
+<p>通过这些技巧，你可以设计出专业级别的图标！</p>
+]]></content>
+      <categories>
+        <category>技巧</category>
+      </categories>
+      <tags>
+        <tag>设计</tag>
+        <tag>图标</tag>
+        <tag>Affinity Designer</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>AI动画测试</title>
+    <url>/2025/01/23/AI%E5%8A%A8%E7%94%BB%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<h1 id="AI动画测试文章"><a href="#AI动画测试文章" class="headerlink" title="AI动画测试文章"></a>AI动画测试文章</h1><p>这是一篇专门用来测试AI摘要动画效果的文章。我们需要确保AI摘要能够完整显示，不会出现截断现象。</p>
+<h2 id="测试内容"><a href="#测试内容" class="headerlink" title="测试内容"></a>测试内容</h2><h3 id="长文本测试"><a href="#长文本测试" class="headerlink" title="长文本测试"></a>长文本测试</h3><p>这里有一段比较长的文本，用来测试AI摘要生成时是否能够完整显示所有内容。文本包含了各种标点符号，如逗号、句号、感叹号、问号等，这些都会影响动画的显示效果。</p>
+<h3 id="技术要点"><a href="#技术要点" class="headerlink" title="技术要点"></a>技术要点</h3><ol>
+<li>动画逻辑修复</li>
+<li>光标处理优化</li>
+<li>状态管理改进</li>
+<li>错误处理完善</li>
+</ol>
+<h3 id="预期效果"><a href="#预期效果" class="headerlink" title="预期效果"></a>预期效果</h3><ul>
+<li>完整显示所有文本内容</li>
+<li>流畅的打字机动画效果</li>
+<li>标点符号处的适当停顿</li>
+<li>正确的光标显示和移除</li>
+</ul>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>通过这次测试，我们可以验证AI摘要动画是否已经修复了截断问题。如果一切正常，用户应该能看到完整的AI摘要内容，而不是被截断的文本。</p>
+<p>这篇文章包含了足够的内容来生成一个有意义的摘要，同时也提供了足够的复杂性来测试动画逻辑的各个方面。</p>
+]]></content>
+      <categories>
+        <category>测试</category>
+      </categories>
+      <tags>
+        <tag>AI</tag>
+        <tag>动画</tag>
+        <tag>测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker 容器化部署指南</title>
+    <url>/2025/04/16/Docker%E5%AE%B9%E5%99%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97/</url>
+    <content><![CDATA[<h1 id="Docker-容器化部署指南"><a href="#Docker-容器化部署指南" class="headerlink" title="Docker 容器化部署指南"></a>Docker 容器化部署指南</h1><p>Docker 是现代应用部署的标准工具，让我们一起学习如何使用它。</p>
+<h2 id="Docker-基础概念"><a href="#Docker-基础概念" class="headerlink" title="Docker 基础概念"></a>Docker 基础概念</h2><h3 id="镜像-Image"><a href="#镜像-Image" class="headerlink" title="镜像 (Image)"></a>镜像 (Image)</h3><p>应用程序的只读模板，包含运行应用所需的所有内容。</p>
+<h3 id="容器-Container"><a href="#容器-Container" class="headerlink" title="容器 (Container)"></a>容器 (Container)</h3><p>镜像的运行实例，是应用程序的实际运行环境。</p>
+<h3 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h3><p>用于构建镜像的文本文件，包含一系列指令。</p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="镜像操作"><a href="#镜像操作" class="headerlink" title="镜像操作"></a>镜像操作</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 拉取镜像</span></span><br><span class="line">docker pull nginx:latest</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看镜像</span></span><br><span class="line">docker images</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除镜像</span></span><br><span class="line">docker rmi image_id</span><br></pre></td></tr></table></figure>
+
+<h3 id="容器操作"><a href="#容器操作" class="headerlink" title="容器操作"></a>容器操作</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 运行容器</span></span><br><span class="line">docker run -d -p 80:80 nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看容器</span></span><br><span class="line">docker ps</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止容器</span></span><br><span class="line">docker stop container_id</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除容器</span></span><br><span class="line">docker <span class="built_in">rm</span> container_id</span><br></pre></td></tr></table></figure>
+
+<h2 id="实战案例：部署-Node-js-应用"><a href="#实战案例：部署-Node-js-应用" class="headerlink" title="实战案例：部署 Node.js 应用"></a>实战案例：部署 Node.js 应用</h2><h3 id="1-创建-Dockerfile"><a href="#1-创建-Dockerfile" class="headerlink" title="1. 创建 Dockerfile"></a>1. 创建 Dockerfile</h3><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:<span class="number">16</span>-alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> package*.json ./</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm install</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . .</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">3000</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;npm&quot;</span>, <span class="string">&quot;start&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-构建镜像"><a href="#2-构建镜像" class="headerlink" title="2. 构建镜像"></a>2. 构建镜像</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker build -t my-node-app .</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-运行容器"><a href="#3-运行容器" class="headerlink" title="3. 运行容器"></a>3. 运行容器</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker run -d -p 3000:3000 my-node-app</span><br></pre></td></tr></table></figure>
+
+<h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><p>对于多容器应用，使用 Docker Compose：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.8&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">.</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;3000:3000&quot;</span></span><br><span class="line">  <span class="attr">db:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">postgres:13</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">POSTGRES_PASSWORD:</span> <span class="string">password</span></span><br></pre></td></tr></table></figure>
+
+<p>Docker 让部署变得简单可靠！</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>部署</tag>
+        <tag>容器化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python 自动化脚本合集</title>
+    <url>/2025/04/18/Python%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC%E5%90%88%E9%9B%86/</url>
+    <content><![CDATA[<h1 id="Python-自动化脚本合集"><a href="#Python-自动化脚本合集" class="headerlink" title="Python 自动化脚本合集"></a>Python 自动化脚本合集</h1><p>Python 的强大之处在于能够快速编写自动化脚本，解决日常工作中的重复性任务。</p>
+<h2 id="文件处理脚本"><a href="#文件处理脚本" class="headerlink" title="文件处理脚本"></a>文件处理脚本</h2><h3 id="批量重命名文件"><a href="#批量重命名文件" class="headerlink" title="批量重命名文件"></a>批量重命名文件</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">batch_rename</span>(<span class="params">directory, pattern, replacement</span>):</span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> os.listdir(directory):</span><br><span class="line">        <span class="keyword">if</span> re.search(pattern, filename):</span><br><span class="line">            new_name = re.sub(pattern, replacement, filename)</span><br><span class="line">            old_path = os.path.join(directory, filename)</span><br><span class="line">            new_path = os.path.join(directory, new_name)</span><br><span class="line">            os.rename(old_path, new_path)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;重命名: <span class="subst">&#123;filename&#125;</span> -&gt; <span class="subst">&#123;new_name&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件分类整理"><a href="#文件分类整理" class="headerlink" title="文件分类整理"></a>文件分类整理</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">organize_files</span>(<span class="params">source_dir</span>):</span><br><span class="line">    extensions = &#123;</span><br><span class="line">        <span class="string">&#x27;images&#x27;</span>: [<span class="string">&#x27;.jpg&#x27;</span>, <span class="string">&#x27;.jpeg&#x27;</span>, <span class="string">&#x27;.png&#x27;</span>, <span class="string">&#x27;.gif&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;documents&#x27;</span>: [<span class="string">&#x27;.pdf&#x27;</span>, <span class="string">&#x27;.doc&#x27;</span>, <span class="string">&#x27;.docx&#x27;</span>, <span class="string">&#x27;.txt&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;videos&#x27;</span>: [<span class="string">&#x27;.mp4&#x27;</span>, <span class="string">&#x27;.avi&#x27;</span>, <span class="string">&#x27;.mkv&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;music&#x27;</span>: [<span class="string">&#x27;.mp3&#x27;</span>, <span class="string">&#x27;.wav&#x27;</span>, <span class="string">&#x27;.flac&#x27;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> os.listdir(source_dir):</span><br><span class="line">        file_ext = os.path.splitext(filename)[<span class="number">1</span>].lower()</span><br><span class="line">        <span class="keyword">for</span> folder, exts <span class="keyword">in</span> extensions.items():</span><br><span class="line">            <span class="keyword">if</span> file_ext <span class="keyword">in</span> exts:</span><br><span class="line">                dest_dir = os.path.join(source_dir, folder)</span><br><span class="line">                os.makedirs(dest_dir, exist_ok=<span class="literal">True</span>)</span><br><span class="line">                shutil.move(</span><br><span class="line">                    os.path.join(source_dir, filename),</span><br><span class="line">                    os.path.join(dest_dir, filename)</span><br><span class="line">                )</span><br><span class="line">                <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="网络爬虫脚本"><a href="#网络爬虫脚本" class="headerlink" title="网络爬虫脚本"></a>网络爬虫脚本</h2><h3 id="简单网页内容抓取"><a href="#简单网页内容抓取" class="headerlink" title="简单网页内容抓取"></a>简单网页内容抓取</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">scrape_website</span>(<span class="params">url</span>):</span><br><span class="line">    response = requests.get(url)</span><br><span class="line">    soup = BeautifulSoup(response.content, <span class="string">&#x27;html.parser&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 提取标题</span></span><br><span class="line">    title = soup.find(<span class="string">&#x27;title&#x27;</span>).text</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 提取所有链接</span></span><br><span class="line">    links = [a.get(<span class="string">&#x27;href&#x27;</span>) <span class="keyword">for</span> a <span class="keyword">in</span> soup.find_all(<span class="string">&#x27;a&#x27;</span>, href=<span class="literal">True</span>)]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> title, links</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据处理脚本"><a href="#数据处理脚本" class="headerlink" title="数据处理脚本"></a>数据处理脚本</h2><h3 id="Excel-数据处理"><a href="#Excel-数据处理" class="headerlink" title="Excel 数据处理"></a>Excel 数据处理</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_excel</span>(<span class="params">file_path</span>):</span><br><span class="line">    df = pd.read_excel(file_path)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 数据清洗</span></span><br><span class="line">    df = df.dropna()  <span class="comment"># 删除空值</span></span><br><span class="line">    df = df.drop_duplicates()  <span class="comment"># 删除重复值</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 数据分析</span></span><br><span class="line">    summary = df.describe()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> df, summary</span><br></pre></td></tr></table></figure>
+
+<p>这些脚本可以大大提高日常工作效率，让重复性任务自动化！</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>自动化</tag>
+        <tag>脚本</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Win 下使用 Git 自动同步笔记</title>
+    <url>/2025/04/18/Win%E4%B8%8B%E4%BD%BF%E7%94%A8Git%E8%87%AA%E5%8A%A8%E5%90%8C%E6%AD%A5%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="Win-下使用-Git-自动同步笔记"><a href="#Win-下使用-Git-自动同步笔记" class="headerlink" title="Win 下使用 Git 自动同步笔记"></a>Win 下使用 Git 自动同步笔记</h1><p>折腾了很久要记录系统，发现还是大道至简，回归日记 Typora + MarkDown。</p>
+<h2 id="为什么选择-Git-Markdown"><a href="#为什么选择-Git-Markdown" class="headerlink" title="为什么选择 Git + Markdown"></a>为什么选择 Git + Markdown</h2><p>在尝试了各种笔记软件后，我发现最简单的方案往往是最好的：</p>
+<ul>
+<li><strong>Typora</strong>: 优雅的 Markdown 编辑器</li>
+<li><strong>Git</strong>: 强大的版本控制</li>
+<li><strong>GitHub&#x2F;Gitee</strong>: 云端同步</li>
+</ul>
+<h2 id="自动同步脚本"><a href="#自动同步脚本" class="headerlink" title="自动同步脚本"></a>自动同步脚本</h2><p>创建一个批处理文件来自动同步：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@echo off</span><br><span class="line">cd /d &quot;D:\Notes&quot;</span><br><span class="line">git add .</span><br><span class="line">git commit -m &quot;Auto sync: %date% %time%&quot;</span><br><span class="line">git push origin main</span><br><span class="line">echo 同步完成！</span><br><span class="line">pause</span><br></pre></td></tr></table></figure>
+
+<h2 id="定时任务设置"><a href="#定时任务设置" class="headerlink" title="定时任务设置"></a>定时任务设置</h2><p>使用 Windows 任务计划程序设置定时同步：</p>
+<ol>
+<li>打开任务计划程序</li>
+<li>创建基本任务</li>
+<li>设置触发器（每天&#x2F;每小时）</li>
+<li>设置操作为运行批处理文件</li>
+</ol>
+<p>这样就能实现笔记的自动同步了！</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>自动化</tag>
+        <tag>Git</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Github 主题系统</title>
+    <url>/2025/04/18/Github%E4%B8%BB%E9%A2%98%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<h1 id="Github-主题系统"><a href="#Github-主题系统" class="headerlink" title="Github 主题系统"></a>Github 主题系统</h1><p>Github 不仅是代码托管平台，还提供了丰富的主题定制功能。</p>
+<h2 id="README-美化"><a href="#README-美化" class="headerlink" title="README 美化"></a>README 美化</h2><h3 id="1-个人资料-README"><a href="#1-个人资料-README" class="headerlink" title="1. 个人资料 README"></a>1. 个人资料 README</h3><p>在用户名同名仓库中创建 README.md，可以自定义个人主页</p>
+<h3 id="2-动态统计"><a href="#2-动态统计" class="headerlink" title="2. 动态统计"></a>2. 动态统计</h3><p>使用 GitHub Stats 卡片显示代码统计</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">![<span class="string">GitHub stats</span>](<span class="link">https://github-readme-stats.vercel.app/api?username=your-username</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-技能徽章"><a href="#3-技能徽章" class="headerlink" title="3. 技能徽章"></a>3. 技能徽章</h3><p>添加技能和工具徽章</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">![<span class="string">HTML5</span>](<span class="link">https://img.shields.io/badge/-HTML5-E34F26?style=flat&amp;logo=html5&amp;logoColor=white</span>)</span><br><span class="line">![<span class="string">CSS3</span>](<span class="link">https://img.shields.io/badge/-CSS3-1572B6?style=flat&amp;logo=css3</span>)</span><br><span class="line">![<span class="string">JavaScript</span>](<span class="link">https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat&amp;logo=javascript&amp;logoColor=black</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="仓库主题"><a href="#仓库主题" class="headerlink" title="仓库主题"></a>仓库主题</h2><h3 id="1-选择合适的-License"><a href="#1-选择合适的-License" class="headerlink" title="1. 选择合适的 License"></a>1. 选择合适的 License</h3><p>为项目选择合适的开源协议</p>
+<h3 id="2-编写详细的-README"><a href="#2-编写详细的-README" class="headerlink" title="2. 编写详细的 README"></a>2. 编写详细的 README</h3><ul>
+<li>项目介绍</li>
+<li>安装说明</li>
+<li>使用方法</li>
+<li>贡献指南</li>
+</ul>
+<h3 id="3-使用-GitHub-Pages"><a href="#3-使用-GitHub-Pages" class="headerlink" title="3. 使用 GitHub Pages"></a>3. 使用 GitHub Pages</h3><p>将项目部署为静态网站</p>
+<h2 id="高级功能"><a href="#高级功能" class="headerlink" title="高级功能"></a>高级功能</h2><h3 id="GitHub-Actions"><a href="#GitHub-Actions" class="headerlink" title="GitHub Actions"></a>GitHub Actions</h3><p>自动化工作流程，实现 CI&#x2F;CD</p>
+<h3 id="Issues-模板"><a href="#Issues-模板" class="headerlink" title="Issues 模板"></a>Issues 模板</h3><p>标准化问题报告格式</p>
+<h3 id="Pull-Request-模板"><a href="#Pull-Request-模板" class="headerlink" title="Pull Request 模板"></a>Pull Request 模板</h3><p>规范代码贡献流程</p>
+<p>通过这些功能，可以让你的 GitHub 仓库更加专业和美观！</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>Github</tag>
+        <tag>主题</tag>
+        <tag>开源</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>butterfly 重装日记</title>
+    <url>/2023/06/01/butterfly-%E9%87%8D%E8%A3%85%E6%97%A5%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近决定重新装一下butterfly主题，主要是想体验一下新版本的功能，同时也想重新整理一下博客的结构。这篇文章记录了整个重装过程中的一些心得体会。</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><h3 id="备份重要数据"><a href="#备份重要数据" class="headerlink" title="备份重要数据"></a>备份重要数据</h3><p>在重装之前，一定要备份好重要的数据：</p>
+<ol>
+<li><strong>文章内容</strong>：<code>source/_posts/</code> 目录下的所有文章</li>
+<li><strong>配置文件</strong>：<code>_config.yml</code> 和 <code>_config.butterfly.yml</code></li>
+<li><strong>自定义文件</strong>：<code>source/_data/</code> 目录下的数据文件</li>
+<li><strong>图片资源</strong>：<code>source/img/</code> 目录下的图片</li>
+</ol>
+<h3 id="环境检查"><a href="#环境检查" class="headerlink" title="环境检查"></a>环境检查</h3><p>确保本地环境满足要求：</p>
+<ul>
+<li>Node.js 版本 &gt;&#x3D; 14.0</li>
+<li>Git 已正确配置</li>
+<li>Hexo CLI 已安装</li>
+</ul>
+<h2 id="重装步骤"><a href="#重装步骤" class="headerlink" title="重装步骤"></a>重装步骤</h2><h3 id="1-卸载旧主题"><a href="#1-卸载旧主题" class="headerlink" title="1. 卸载旧主题"></a>1. 卸载旧主题</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-theme-butterfly</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-安装新版本"><a href="#2-安装新版本" class="headerlink" title="2. 安装新版本"></a>2. 安装新版本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-theme-butterfly --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-配置文件迁移"><a href="#3-配置文件迁移" class="headerlink" title="3. 配置文件迁移"></a>3. 配置文件迁移</h3><p>将备份的配置文件内容逐步迁移到新的配置文件中，注意检查新版本是否有配置项的变更。</p>
+<h3 id="4-插件重新安装"><a href="#4-插件重新安装" class="headerlink" title="4. 插件重新安装"></a>4. 插件重新安装</h3><p>重新安装必要的插件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-renderer-pug hexo-renderer-stylus --save</span><br><span class="line">npm install hexo-generator-search --save</span><br><span class="line">npm install hexo-wordcount --save</span><br></pre></td></tr></table></figure>
+
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><h3 id="问题1：样式丢失"><a href="#问题1：样式丢失" class="headerlink" title="问题1：样式丢失"></a>问题1：样式丢失</h3><p><strong>现象</strong>：重装后发现部分自定义样式丢失</p>
+<p><strong>解决方案</strong>：检查 <code>source/_data/styles.styl</code> 文件是否存在，重新添加自定义样式</p>
+<h3 id="问题2：插件冲突"><a href="#问题2：插件冲突" class="headerlink" title="问题2：插件冲突"></a>问题2：插件冲突</h3><p><strong>现象</strong>：某些插件在新版本中不兼容</p>
+<p><strong>解决方案</strong>：查看插件文档，更新到兼容版本或寻找替代插件</p>
+<h3 id="问题3：配置项变更"><a href="#问题3：配置项变更" class="headerlink" title="问题3：配置项变更"></a>问题3：配置项变更</h3><p><strong>现象</strong>：部分配置项在新版本中已废弃或更名</p>
+<p><strong>解决方案</strong>：参考官方文档，更新配置项名称和格式</p>
+<h2 id="优化建议"><a href="#优化建议" class="headerlink" title="优化建议"></a>优化建议</h2><h3 id="1-性能优化"><a href="#1-性能优化" class="headerlink" title="1. 性能优化"></a>1. 性能优化</h3><ul>
+<li>启用图片懒加载</li>
+<li>配置CDN加速</li>
+<li>压缩CSS和JS文件</li>
+</ul>
+<h3 id="2-SEO优化"><a href="#2-SEO优化" class="headerlink" title="2. SEO优化"></a>2. SEO优化</h3><ul>
+<li>配置sitemap</li>
+<li>添加robots.txt</li>
+<li>优化meta标签</li>
+</ul>
+<h3 id="3-用户体验"><a href="#3-用户体验" class="headerlink" title="3. 用户体验"></a>3. 用户体验</h3><ul>
+<li>配置搜索功能</li>
+<li>添加评论系统</li>
+<li>启用暗黑模式</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>重装butterfly主题虽然过程有些繁琐，但是能够体验到新版本的功能还是很值得的。建议大家在重装前一定要做好备份工作，避免数据丢失。</p>
+<p>同时，重装也是一个重新审视博客结构和内容的好机会，可以趁此机会优化博客的整体布局和用户体验。</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>主题</tag>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2025/08/14/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+      <categories>
+        <category>技巧</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>开始</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客工作流CI（一键部署的快乐）</title>
+    <url>/2023/02/15/hexo%E5%8D%9A%E5%AE%A2%E5%B7%A5%E4%BD%9C%E6%B5%81CI%EF%BC%88%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E7%9A%84%E5%BF%AB%E4%B9%90%EF%BC%89/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>前端</category>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>工作流</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>html 属性Accesskey详细解析</title>
+    <url>/2023/07/01/html-%E5%B1%9E%E6%80%A7Accesskey%E8%AF%A6%E7%BB%86%E8%A7%A3%E6%9E%90/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>前端</category>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>开发</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>”</title>
+    <url>/2025/08/15/%E2%80%9D/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>vscode 插件 How 外挂推荐</title>
+    <url>/2025/04/18/vscode%E6%8F%92%E4%BB%B6How%E5%A4%96%E6%8C%82%E6%8E%A8%E8%8D%90/</url>
+    <content><![CDATA[<h1 id="VSCode-插件推荐"><a href="#VSCode-插件推荐" class="headerlink" title="VSCode 插件推荐"></a>VSCode 插件推荐</h1><p>作为前端开发者，VSCode 是我们最常用的编辑器。今天推荐一些超级好用的插件。</p>
+<h2 id="必装插件"><a href="#必装插件" class="headerlink" title="必装插件"></a>必装插件</h2><h3 id="1-Auto-Rename-Tag"><a href="#1-Auto-Rename-Tag" class="headerlink" title="1. Auto Rename Tag"></a>1. Auto Rename Tag</h3><p>自动重命名配对的 HTML&#x2F;XML 标签</p>
+<h3 id="2-Bracket-Pair-Colorizer"><a href="#2-Bracket-Pair-Colorizer" class="headerlink" title="2. Bracket Pair Colorizer"></a>2. Bracket Pair Colorizer</h3><p>为括号添加颜色，让代码结构更清晰</p>
+<h3 id="3-Chinese-Simplified"><a href="#3-Chinese-Simplified" class="headerlink" title="3. Chinese (Simplified)"></a>3. Chinese (Simplified)</h3><p>中文语言包</p>
+<h3 id="4-ES7-React-Redux-React-Native-snippets"><a href="#4-ES7-React-Redux-React-Native-snippets" class="headerlink" title="4. ES7+ React&#x2F;Redux&#x2F;React-Native snippets"></a>4. ES7+ React&#x2F;Redux&#x2F;React-Native snippets</h3><p>React 开发必备代码片段</p>
+<h3 id="5-GitLens"><a href="#5-GitLens" class="headerlink" title="5. GitLens"></a>5. GitLens</h3><p>增强 Git 功能，显示代码作者和提交历史</p>
+<h2 id="主题插件"><a href="#主题插件" class="headerlink" title="主题插件"></a>主题插件</h2><h3 id="One-Dark-Pro"><a href="#One-Dark-Pro" class="headerlink" title="One Dark Pro"></a>One Dark Pro</h3><p>经典的暗色主题</p>
+<h3 id="Material-Icon-Theme"><a href="#Material-Icon-Theme" class="headerlink" title="Material Icon Theme"></a>Material Icon Theme</h3><p>美观的文件图标主题</p>
+<h2 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h2><h3 id="Live-Server"><a href="#Live-Server" class="headerlink" title="Live Server"></a>Live Server</h3><p>本地开发服务器</p>
+<h3 id="Prettier"><a href="#Prettier" class="headerlink" title="Prettier"></a>Prettier</h3><p>代码格式化工具</p>
+<h3 id="Thunder-Client"><a href="#Thunder-Client" class="headerlink" title="Thunder Client"></a>Thunder Client</h3><p>API 测试工具，类似 Postman</p>
+<p>这些插件能大大提升开发效率，强烈推荐！</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>VSCode</tag>
+        <tag>插件</tag>
+        <tag>开发工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>什么是CDN？它解决了什么难题？国内CDN加Vercel，无服务器使用办法</title>
+    <url>/2023/08/26/%E4%BB%80%E4%B9%88%E6%98%AFCDN%EF%BC%9F%E5%AE%83%E8%A7%A3%E5%86%B3%E4%BA%86%E4%BB%80%E4%B9%88%E9%9A%BE%E9%A2%98%EF%BC%9F%E5%9B%BD%E5%86%85CDN%E5%8A%A0Vercel%EF%BC%8C%E6%97%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BD%BF%E7%94%A8%E5%8A%9E%E6%B3%95/</url>
+    <content><![CDATA[<p>最近遇到了部分地区vercel即便绑定了自定义域名任然有部分用户无法访问被阻断的情况，于是就打算给vercel套一层国内CDN，既然用户无法访问vercel的ip，那么就让用户去访问国内 CDN的节点，然后再让节点去回源访问vercel即可。</p>
+<p>该教程适用于无服务器的情况，如果有自己的服务器就没必要多此一举，而是可以直接使用国内CDN即可。注意大部分国内 CDN使用需要域名进行备案。</p>
+<h2 id="什么是CDN"><a href="#什么是CDN" class="headerlink" title="什么是CDN?"></a>什么是CDN?</h2><p>CDN英文全称Content Delivery Network，中文翻译即为内容分发网络。它是建立并覆盖在承载网之上，由分布在不同区域的边缘节点服务器群组成的分布式网络。</p>
+<p>简而言之就是，厂商在全国各地都有很多很多的服务器，每一个服务器我们称之为节点，很多的节点组成了CDN。</p>
+<h2 id="CDN工作原理"><a href="#CDN工作原理" class="headerlink" title="CDN工作原理"></a>CDN工作原理</h2><p>CDN的工作原理就是将源站的资源缓存到位于全国各地的CDN节点上，用户请求资源时，就近返回节点上缓存的资源，而不需要每个用户的请求都回您的源站获取，避免网络拥塞、分担源站压力，保证用户访问资源的速度和体验。</p>
+<p>在用户与源站之间加了一层CDN，用户先访问 CDN的节点，CDN节点再去源站拿取内容，当用户第二次访问时，CDN节点就可以直接返回缓存的内容，而不需要再次访问源站。</p>
+<h2 id="为什么需要CDN？"><a href="#为什么需要CDN？" class="headerlink" title="为什么需要CDN？"></a>为什么需要CDN？</h2><ol>
+<li><strong>加速访问</strong>：通过就近访问，减少网络延迟</li>
+<li><strong>减轻服务器压力</strong>：分散请求到各个节点</li>
+<li><strong>提高可用性</strong>：即使源站出现问题，CDN仍可提供服务</li>
+<li><strong>节省带宽成本</strong>：减少源站的带宽消耗</li>
+</ol>
+<h2 id="Vercel-国内CDN配置"><a href="#Vercel-国内CDN配置" class="headerlink" title="Vercel + 国内CDN配置"></a>Vercel + 国内CDN配置</h2><h3 id="步骤1：准备工作"><a href="#步骤1：准备工作" class="headerlink" title="步骤1：准备工作"></a>步骤1：准备工作</h3><ol>
+<li>确保你的Vercel项目已经部署成功</li>
+<li>准备一个已备案的域名</li>
+<li>选择一个国内CDN服务商（如阿里云、腾讯云、又拍云等）</li>
+</ol>
+<h3 id="步骤2：配置CDN"><a href="#步骤2：配置CDN" class="headerlink" title="步骤2：配置CDN"></a>步骤2：配置CDN</h3><ol>
+<li>在CDN控制台添加加速域名</li>
+<li>源站类型选择”源站域名”</li>
+<li>源站地址填写你的Vercel域名</li>
+<li>配置HTTPS证书</li>
+<li>设置缓存规则</li>
+</ol>
+<h3 id="步骤3：DNS解析"><a href="#步骤3：DNS解析" class="headerlink" title="步骤3：DNS解析"></a>步骤3：DNS解析</h3><p>将你的域名CNAME解析到CDN提供的地址即可。</p>
+<p>这样配置后，国内用户访问你的域名时，会先到达CDN节点，然后CDN节点再去访问Vercel，实现了加速和稳定性的双重保障。</p>
+]]></content>
+      <categories>
+        <category>网络安全</category>
+      </categories>
+      <tags>
+        <tag>CDN</tag>
+        <tag>网络安全</tag>
+        <tag>Vercel</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>前端开发技巧分享</title>
+    <url>/2025/04/18/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7%E5%88%86%E4%BA%AB/</url>
+    <content><![CDATA[<h1 id="前端开发技巧分享"><a href="#前端开发技巧分享" class="headerlink" title="前端开发技巧分享"></a>前端开发技巧分享</h1><p>在前端开发中，掌握一些实用技巧能让我们事半功倍。</p>
+<h2 id="CSS-技巧"><a href="#CSS-技巧" class="headerlink" title="CSS 技巧"></a>CSS 技巧</h2><h3 id="1-单行文本省略"><a href="#1-单行文本省略" class="headerlink" title="1. 单行文本省略"></a>1. 单行文本省略</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.text-ellipsis</span> &#123;</span><br><span class="line">  <span class="attribute">white-space</span>: nowrap;</span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">  <span class="attribute">text-overflow</span>: ellipsis;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-多行文本省略"><a href="#2-多行文本省略" class="headerlink" title="2. 多行文本省略"></a>2. 多行文本省略</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.text-ellipsis-multi</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: -webkit-box;</span><br><span class="line">  -webkit-<span class="selector-tag">line</span>-clamp: <span class="number">3</span>;</span><br><span class="line">  -webkit-<span class="attribute">box-orient</span>: vertical;</span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-完美居中"><a href="#3-完美居中" class="headerlink" title="3. 完美居中"></a>3. 完美居中</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.center</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">  <span class="attribute">align-items</span>: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="JavaScript-技巧"><a href="#JavaScript-技巧" class="headerlink" title="JavaScript 技巧"></a>JavaScript 技巧</h2><h3 id="1-数组去重"><a href="#1-数组去重" class="headerlink" title="1. 数组去重"></a>1. 数组去重</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> unique = [...<span class="keyword">new</span> <span class="title class_">Set</span>(array)];</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-对象深拷贝"><a href="#2-对象深拷贝" class="headerlink" title="2. 对象深拷贝"></a>2. 对象深拷贝</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> deepCopy = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(obj));</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-防抖函数"><a href="#3-防抖函数" class="headerlink" title="3. 防抖函数"></a>3. 防抖函数</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">debounce</span>(<span class="params">func, wait</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> timeout;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> <span class="title function_">executedFunction</span>(<span class="params">...args</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">later</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">      <span class="built_in">clearTimeout</span>(timeout);</span><br><span class="line">      <span class="title function_">func</span>(...args);</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">clearTimeout</span>(timeout);</span><br><span class="line">    timeout = <span class="built_in">setTimeout</span>(later, wait);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><h3 id="1-图片懒加载"><a href="#1-图片懒加载" class="headerlink" title="1. 图片懒加载"></a>1. 图片懒加载</h3><p>使用 Intersection Observer API 实现图片懒加载</p>
+<h3 id="2-代码分割"><a href="#2-代码分割" class="headerlink" title="2. 代码分割"></a>2. 代码分割</h3><p>使用动态 import() 实现按需加载</p>
+<h3 id="3-缓存策略"><a href="#3-缓存策略" class="headerlink" title="3. 缓存策略"></a>3. 缓存策略</h3><p>合理使用浏览器缓存和 CDN</p>
+<p>这些技巧在日常开发中非常实用，希望对大家有帮助！</p>
+]]></content>
+      <categories>
+        <category>技巧</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>前端</tag>
+        <tag>技巧</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>周末读书笔记</title>
+    <url>/2025/04/15/%E5%91%A8%E6%9C%AB%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="周末读书笔记"><a href="#周末读书笔记" class="headerlink" title="周末读书笔记"></a>周末读书笔记</h1><p>周末的时光最适合静下心来读书，记录一些最近的读书收获。</p>
+<h2 id="本周阅读：《原则》"><a href="#本周阅读：《原则》" class="headerlink" title="本周阅读：《原则》"></a>本周阅读：《原则》</h2><h3 id="主要观点"><a href="#主要观点" class="headerlink" title="主要观点"></a>主要观点</h3><p><strong>1. 极度透明</strong><br>在组织中建立极度透明的文化，让每个人都能诚实地表达观点。</p>
+<p><strong>2. 极度求真</strong><br>追求真相，即使真相可能让人不舒服。</p>
+<p><strong>3. 原则的力量</strong><br>建立一套清晰的原则体系，用来指导决策和行为。</p>
+<h3 id="个人感悟"><a href="#个人感悟" class="headerlink" title="个人感悟"></a>个人感悟</h3><p>这本书让我重新思考了很多问题：</p>
+<ul>
+<li>如何面对失败和挫折</li>
+<li>如何建立有效的反馈机制</li>
+<li>如何在团队中保持开放的沟通</li>
+</ul>
+<h2 id="读书方法分享"><a href="#读书方法分享" class="headerlink" title="读书方法分享"></a>读书方法分享</h2><h3 id="1-主动阅读"><a href="#1-主动阅读" class="headerlink" title="1. 主动阅读"></a>1. 主动阅读</h3><p>带着问题去读书，思考作者想要解决什么问题。</p>
+<h3 id="2-做笔记"><a href="#2-做笔记" class="headerlink" title="2. 做笔记"></a>2. 做笔记</h3><p>记录重要观点和个人思考。</p>
+<h3 id="3-实践应用"><a href="#3-实践应用" class="headerlink" title="3. 实践应用"></a>3. 实践应用</h3><p>将书中的理念应用到实际生活中。</p>
+<h3 id="4-分享讨论"><a href="#4-分享讨论" class="headerlink" title="4. 分享讨论"></a>4. 分享讨论</h3><p>和朋友分享读书心得，加深理解。</p>
+<h2 id="下周计划"><a href="#下周计划" class="headerlink" title="下周计划"></a>下周计划</h2><p>准备阅读《深度工作》，学习如何在信息时代保持专注。</p>
+<h2 id="推荐书单"><a href="#推荐书单" class="headerlink" title="推荐书单"></a>推荐书单</h2><ul>
+<li>《原则》- 瑞·达利欧</li>
+<li>《深度工作》- 卡尔·纽波特</li>
+<li>《思考，快与慢》- 丹尼尔·卡尼曼</li>
+<li>《刻意练习》- 安德斯·艾利克森</li>
+</ul>
+<p>读书是最好的投资，让我们一起在书海中遨游！</p>
+]]></content>
+      <categories>
+        <category>单纯</category>
+      </categories>
+      <tags>
+        <tag>读书</tag>
+        <tag>笔记</tag>
+        <tag>成长</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>全新卡片式外链标签引入</title>
+    <url>/2023/06/30/%E5%85%A8%E6%96%B0%E5%8D%A1%E7%89%87%E5%BC%8F%E5%A4%96%E9%93%BE%E6%A0%87%E7%AD%BE%E5%BC%95%E5%85%A5/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>前端</category>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>教程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安知鱼主题标签 Tag Plugins</title>
+    <url>/2023/06/01/%E5%AE%89%E7%9F%A5%E9%B1%BC%E4%B8%BB%E9%A2%98%E6%A0%87%E7%AD%BE-Tag-Plugins/</url>
+    <content><![CDATA[<h1 id="Hexo-Tag-Plugins"><a href="#Hexo-Tag-Plugins" class="headerlink" title="Hexo Tag Plugins"></a>Hexo Tag Plugins</h1><p>AnZhiYu主题中大部分标签移植于店长的hexo-butterfly-tag-plugins-plus，转载请注明来自安知鱼</p>
+<h2 id="段落文本-p标签"><a href="#段落文本-p标签" class="headerlink" title="段落文本 p标签"></a>段落文本 p标签</h2><h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% p 样式参数(参数以空格划分), 文本内容 %&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置参数"><a href="#配置参数" class="headerlink" title="配置参数"></a>配置参数</h3><ul>
+<li>字体: logo, code</li>
+<li>颜色: red,yellow,green,cyan,blue,gray</li>
+<li>大小: small, h4, h3, h2, h1, large, huge, ultra</li>
+<li>对齐方向: left, center, right</li>
+</ul>
+<h3 id="样式预览"><a href="#样式预览" class="headerlink" title="样式预览"></a>样式预览</h3><p class='p red'>彩色文字</p>在一段话中方便插入各种颜色的标签，包括：<p class='p red'>红色</p>、<p class='p yellow'>黄色</p>、<p class='p green'>绿色</p>、<p class='p cyan'>青色</p>、<p class='p blue'>蓝色</p>、<p class='p gray'>灰色</p>。
+
+<p class='p h1 center logo'>超大号文字</p>
+
+<p>文档「开始」页面中的标题部分就是超大号文字。</p>
+<p class='p center logo large'>Volantis</p>
+<p class='p center small'>A Wonderful Theme for Hexo</p>
+]]></content>
+      <categories>
+        <category>技巧</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Tag Plugins</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>弹性盒子布局完全指南</title>
+    <url>/2023/05/20/%E5%BC%B9%E6%80%A7%E7%9B%92%E5%AD%90%E5%B8%83%E5%B1%80%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/</url>
+    <content><![CDATA[<h2 id="什么是Flexbox？"><a href="#什么是Flexbox？" class="headerlink" title="什么是Flexbox？"></a>什么是Flexbox？</h2><p>Flexbox（弹性盒子布局）是CSS3中的一种布局方式，它能够更加高效地安排、分布和对齐容器中的项目，即使它们的大小未知或是动态的。</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="主轴和交叉轴"><a href="#主轴和交叉轴" class="headerlink" title="主轴和交叉轴"></a>主轴和交叉轴</h3><ul>
+<li><strong>主轴（main axis）</strong>：Flexbox的主要轴线</li>
+<li><strong>交叉轴（cross axis）</strong>：垂直于主轴的轴线</li>
+</ul>
+<h3 id="容器和项目"><a href="#容器和项目" class="headerlink" title="容器和项目"></a>容器和项目</h3><ul>
+<li><strong>容器（container）</strong>：设置了 <code>display: flex</code> 的父元素</li>
+<li><strong>项目（item）</strong>：容器内的直接子元素</li>
+</ul>
+<h2 id="容器属性"><a href="#容器属性" class="headerlink" title="容器属性"></a>容器属性</h2><h3 id="display"><a href="#display" class="headerlink" title="display"></a>display</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex; <span class="comment">/* 或者 inline-flex */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="flex-direction"><a href="#flex-direction" class="headerlink" title="flex-direction"></a>flex-direction</h3><p>控制主轴的方向：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">flex-direction</span>: row | row-reverse | column | column-reverse;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="flex-wrap"><a href="#flex-wrap" class="headerlink" title="flex-wrap"></a>flex-wrap</h3><p>控制是否换行：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">flex-wrap</span>: nowrap | wrap | wrap-reverse;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="justify-content"><a href="#justify-content" class="headerlink" title="justify-content"></a>justify-content</h3><p>控制主轴上的对齐方式：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">justify-content</span>: flex-start | flex-end | center | space-between | space-around | space-evenly;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="align-items"><a href="#align-items" class="headerlink" title="align-items"></a>align-items</h3><p>控制交叉轴上的对齐方式：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">align-items</span>: stretch | flex-start | flex-end | center | baseline;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="项目属性"><a href="#项目属性" class="headerlink" title="项目属性"></a>项目属性</h2><h3 id="flex-grow"><a href="#flex-grow" class="headerlink" title="flex-grow"></a>flex-grow</h3><p>定义项目的放大比例：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex-grow</span>: <span class="number">0</span>; <span class="comment">/* 默认值，不放大 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="flex-shrink"><a href="#flex-shrink" class="headerlink" title="flex-shrink"></a>flex-shrink</h3><p>定义项目的缩小比例：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex-shrink</span>: <span class="number">1</span>; <span class="comment">/* 默认值，等比缩小 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="flex-basis"><a href="#flex-basis" class="headerlink" title="flex-basis"></a>flex-basis</h3><p>定义项目的初始大小：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex-basis</span>: auto; <span class="comment">/* 默认值 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="align-self"><a href="#align-self" class="headerlink" title="align-self"></a>align-self</h3><p>允许单个项目有与其他项目不一样的对齐方式：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">align-self</span>: auto | flex-start | flex-end | center | baseline | stretch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="实际应用案例"><a href="#实际应用案例" class="headerlink" title="实际应用案例"></a>实际应用案例</h2><h3 id="水平垂直居中"><a href="#水平垂直居中" class="headerlink" title="水平垂直居中"></a>水平垂直居中</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">  <span class="attribute">align-items</span>: center;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100vh</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="等高布局"><a href="#等高布局" class="headerlink" title="等高布局"></a>等高布局</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex</span>: <span class="number">1</span>; <span class="comment">/* 等分剩余空间 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="响应式导航"><a href="#响应式导航" class="headerlink" title="响应式导航"></a>响应式导航</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">justify-content</span>: space-between;</span><br><span class="line">  <span class="attribute">align-items</span>: center;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@media</span> (<span class="attribute">max-width</span>: <span class="number">768px</span>) &#123;</span><br><span class="line">  <span class="selector-class">.nav</span> &#123;</span><br><span class="line">    <span class="attribute">flex-direction</span>: column;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Flexbox是现代CSS布局的重要工具，掌握它能够让我们更轻松地实现各种复杂的布局效果。通过合理使用容器属性和项目属性，我们可以创建出既美观又实用的网页布局。</p>
+]]></content>
+      <categories>
+        <category>技巧</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>CSS</tag>
+        <tag>布局</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>当AI加上PS后让我变的极为振奋(附mac安装ps beta25.0)教程</title>
+    <url>/2023/08/18/%E5%BD%93AI%E5%8A%A0%E4%B8%8APS%E5%90%8E%E8%AE%A9%E6%88%91%E5%8F%98%E7%9A%84%E6%9E%81%E4%B8%BA%E6%8C%AF%E5%A5%8B-%E9%99%84mac%E5%AE%89%E8%A3%85ps-beta25-0-%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>技巧</category>
+      </categories>
+      <tags>
+        <tag>AI</tag>
+        <tag>PS</tag>
+        <tag>绘图</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我的第一篇博客文章</title>
+    <url>/2025/08/15/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/</url>
+    <content><![CDATA[<h1 id="欢迎来到我的博客！"><a href="#欢迎来到我的博客！" class="headerlink" title="欢迎来到我的博客！"></a>欢迎来到我的博客！</h1><p>大家好！这是我在 <strong>Xing Blog</strong> 上的第一篇文章。经过一番折腾，终于把博客搭建好了，现在可以开始记录我的学习和生活了。</p>
+<h2 id="🎯-为什么要写博客？"><a href="#🎯-为什么要写博客？" class="headerlink" title="🎯 为什么要写博客？"></a>🎯 为什么要写博客？</h2><p>写博客对我来说有几个重要的意义：</p>
+<ol>
+<li><strong>记录学习过程</strong>：把学到的知识整理成文章，加深理解</li>
+<li><strong>分享经验</strong>：希望我的经验能帮助到其他人</li>
+<li><strong>思考总结</strong>：通过写作来整理思路，反思成长</li>
+<li><strong>建立个人品牌</strong>：在互联网上留下自己的足迹</li>
+</ol>
+<h2 id="💻-博客技术栈"><a href="#💻-博客技术栈" class="headerlink" title="💻 博客技术栈"></a>💻 博客技术栈</h2><p>这个博客使用了以下技术：</p>
+<ul>
+<li><strong>框架</strong>：Hexo 静态博客生成器</li>
+<li><strong>主题</strong>：AnZhiYu 主题（经过个人定制）</li>
+<li><strong>部署</strong>：VPS + Nginx + SSL证书</li>
+<li><strong>域名</strong>：an.xing2006.me</li>
+</ul>
+<h2 id="🎵-特色功能"><a href="#🎵-特色功能" class="headerlink" title="🎵 特色功能"></a>🎵 特色功能</h2><p>博客还集成了一些有趣的功能：</p>
+<h3 id="音乐播放器"><a href="#音乐播放器" class="headerlink" title="音乐播放器"></a>音乐播放器</h3><p>左下角有一个音乐播放器，收录了我喜欢的歌曲，主要是周杰伦的经典作品。</p>
+<h3 id="技能展示"><a href="#技能展示" class="headerlink" title="技能展示"></a>技能展示</h3><p>在关于页面有一个炫酷的技能图标轮播展示，展示了我掌握的各种技术。</p>
+<h3 id="响应式设计"><a href="#响应式设计" class="headerlink" title="响应式设计"></a>响应式设计</h3><p>博客在手机、平板、电脑上都有良好的显示效果。</p>
+<h2 id="📝-未来计划"><a href="#📝-未来计划" class="headerlink" title="📝 未来计划"></a>📝 未来计划</h2><p>接下来我计划在博客上分享：</p>
+<ul>
+<li><strong>技术文章</strong>：前端开发、Python、Docker等技术心得</li>
+<li><strong>学习笔记</strong>：读书笔记、课程总结</li>
+<li><strong>生活随笔</strong>：旅行见闻、摄影作品、生活感悟</li>
+<li><strong>项目分享</strong>：开源项目、个人作品展示</li>
+</ul>
+<h2 id="🎉-结语"><a href="#🎉-结语" class="headerlink" title="🎉 结语"></a>🎉 结语</h2><p>感谢你阅读我的第一篇博客文章！如果你也在考虑开始写博客，我强烈推荐你试试看。写作不仅能帮助别人，更重要的是能帮助自己成长。</p>
+<p>欢迎在评论区留言，分享你的想法和建议！</p>
+<hr>
+<p><em>本文发布于 2025年8月15日，这是一个值得纪念的日子！</em> 🎊</p>
+]]></content>
+      <categories>
+        <category>日常</category>
+      </categories>
+      <tags>
+        <tag>开始</tag>
+        <tag>博客</tag>
+        <tag>生活</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>摄影技巧分享</title>
+    <url>/2025/04/17/%E6%91%84%E5%BD%B1%E6%8A%80%E5%B7%A7%E5%88%86%E4%BA%AB/</url>
+    <content><![CDATA[<h1 id="摄影技巧分享"><a href="#摄影技巧分享" class="headerlink" title="摄影技巧分享"></a>摄影技巧分享</h1><p>摄影是记录生活的最好方式之一，今天分享一些实用的摄影技巧。</p>
+<h2 id="构图技巧"><a href="#构图技巧" class="headerlink" title="构图技巧"></a>构图技巧</h2><h3 id="三分法则"><a href="#三分法则" class="headerlink" title="三分法则"></a>三分法则</h3><p>将画面分为九等份，将主体放在交叉点上，让照片更有视觉冲击力。</p>
+<h3 id="对称构图"><a href="#对称构图" class="headerlink" title="对称构图"></a>对称构图</h3><p>利用建筑、水面等元素创造对称效果，营造平衡感。</p>
+<h3 id="引导线"><a href="#引导线" class="headerlink" title="引导线"></a>引导线</h3><p>利用道路、栏杆等线条引导观者视线到主体。</p>
+<h2 id="光线运用"><a href="#光线运用" class="headerlink" title="光线运用"></a>光线运用</h2><h3 id="黄金时刻"><a href="#黄金时刻" class="headerlink" title="黄金时刻"></a>黄金时刻</h3><p>日出后和日落前的一小时，光线最柔和温暖。</p>
+<h3 id="逆光拍摄"><a href="#逆光拍摄" class="headerlink" title="逆光拍摄"></a>逆光拍摄</h3><p>创造剪影效果，增加照片的戏剧性。</p>
+<h3 id="侧光拍摄"><a href="#侧光拍摄" class="headerlink" title="侧光拍摄"></a>侧光拍摄</h3><p>突出主体的立体感和质感。</p>
+<h2 id="手机摄影技巧"><a href="#手机摄影技巧" class="headerlink" title="手机摄影技巧"></a>手机摄影技巧</h2><h3 id="清洁镜头"><a href="#清洁镜头" class="headerlink" title="清洁镜头"></a>清洁镜头</h3><p>保持镜头清洁是拍出清晰照片的基础。</p>
+<h3 id="使用网格线"><a href="#使用网格线" class="headerlink" title="使用网格线"></a>使用网格线</h3><p>开启相机的网格线功能，帮助构图。</p>
+<h3 id="多角度拍摄"><a href="#多角度拍摄" class="headerlink" title="多角度拍摄"></a>多角度拍摄</h3><p>不要只从眼睛的高度拍摄，尝试蹲下或举高手机。</p>
+<h2 id="后期处理"><a href="#后期处理" class="headerlink" title="后期处理"></a>后期处理</h2><h3 id="基础调整"><a href="#基础调整" class="headerlink" title="基础调整"></a>基础调整</h3><ul>
+<li>曝光：调整照片的明暗</li>
+<li>对比度：增加照片的层次感</li>
+<li>饱和度：让颜色更鲜艳</li>
+</ul>
+<h3 id="滤镜使用"><a href="#滤镜使用" class="headerlink" title="滤镜使用"></a>滤镜使用</h3><p>适度使用滤镜，不要过度处理。</p>
+<p>记住，最好的相机就是你手边的那台！</p>
+]]></content>
+      <categories>
+        <category>单纯</category>
+      </categories>
+      <tags>
+        <tag>技巧</tag>
+        <tag>生活</tag>
+        <tag>摄影</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网络安全方向：10分钟2700w请求的攻击我是如何处理的</title>
+    <url>/2023/07/16/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%96%B9%E5%90%91%EF%BC%9A10%E5%88%86%E9%92%9F2700w%E8%AF%B7%E6%B1%82%E7%9A%84%E6%94%BB%E5%87%BB%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E7%9A%84/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>技巧</category>
+      </categories>
+      <tags>
+        <tag>网络安全</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>那些年用过的CSS奇妙用法之能用CSS就不用JS技巧系列</title>
+    <url>/2023/08/27/%E9%82%A3%E4%BA%9B%E5%B9%B4%E7%94%A8%E8%BF%87%E7%9A%84CSS%E5%A5%87%E5%A6%99%E7%94%A8%E6%B3%95%E4%B9%8B%E8%83%BD%E7%94%A8CSS%E5%B0%B1%E4%B8%8D%E7%94%A8JS%E6%8A%80%E5%B7%A7%E7%B3%BB%E5%88%97/</url>
+    <content><![CDATA[<h2 id="嵌套的圆角"><a href="#嵌套的圆角" class="headerlink" title="嵌套的圆角"></a>嵌套的圆角</h2><p>在遇到内外两层圆角时，可以通过 CSS 变量动态去计算内部的圆角，看起来会更加和谐</p>
+<h3 id="核心代码"><a href="#核心代码" class="headerlink" title="核心代码"></a>核心代码</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">  <span class="attr">--anzhiyu-nested-radius</span>: <span class="built_in">calc</span>(<span class="built_in">var</span>(--radius) - <span class="built_in">var</span>(--padding));</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.nested</span> &#123;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="built_in">var</span>(--anzhiyu-nested-radius);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>《css嵌套的圆角》在线运行<a href="https://1024code.com/">1024code</a></p>
+<h2 id="视图转换动画-View-Transitions-API"><a href="#视图转换动画-View-Transitions-API" class="headerlink" title="视图转换动画 View Transitions API"></a>视图转换动画 View Transitions API</h2><p>我们先从一个简单的例子来认识一下。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;list&quot;</span> <span class="attr">id</span>=<span class="string">&quot;list&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item&quot;</span>&gt;</span>1<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item&quot;</span>&gt;</span>2<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item&quot;</span>&gt;</span>3<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item&quot;</span>&gt;</span>4<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;item&quot;</span>&gt;</span>5<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个API可以让我们在页面切换时实现平滑的过渡动画，提升用户体验。</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+        <tag>开发</tag>
+        <tag>css3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>长沙两日游记</title>
+    <url>/2023/08/10/%E9%95%BF%E6%B2%99%E4%B8%A4%E6%97%A5%E6%B8%B8%E8%AE%B0/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>单纯</category>
+      </categories>
+      <tags>
+        <tag>生活</tag>
+        <tag>旅行</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>生活中的小确幸</title>
+    <url>/2025/04/18/%E7%94%9F%E6%B4%BB%E4%B8%AD%E7%9A%84%E5%B0%8F%E7%A1%AE%E5%B9%B8/</url>
+    <content><![CDATA[<h1 id="生活中的小确幸"><a href="#生活中的小确幸" class="headerlink" title="生活中的小确幸"></a>生活中的小确幸</h1><p>生活不总是轰轰烈烈的，更多时候是由一个个小确幸组成的。</p>
+<h2 id="清晨的阳光"><a href="#清晨的阳光" class="headerlink" title="清晨的阳光"></a>清晨的阳光</h2><p>每天早上，阳光透过窗帘洒在桌案上，那一刻总是让人感到温暖和希望。</p>
+<h2 id="一杯好咖啡"><a href="#一杯好咖啡" class="headerlink" title="一杯好咖啡"></a>一杯好咖啡</h2><p>工作间隙，品尝一杯香醇的咖啡，让疲惫的心灵得到片刻的宁静。</p>
+<h2 id="朋友的问候"><a href="#朋友的问候" class="headerlink" title="朋友的问候"></a>朋友的问候</h2><p>收到朋友发来的一条简单问候，瞬间感受到被关心的温暖。</p>
+<h2 id="完成一个小目标"><a href="#完成一个小目标" class="headerlink" title="完成一个小目标"></a>完成一个小目标</h2><p>无论是学会一个新技能，还是完成一个小项目，那种成就感都是珍贵的。</p>
+<h2 id="夜晚的星空"><a href="#夜晚的星空" class="headerlink" title="夜晚的星空"></a>夜晚的星空</h2><p>偶尔抬头看看星空，提醒自己在这个广阔的宇宙中，我们都是独特的存在。</p>
+<h2 id="一本好书"><a href="#一本好书" class="headerlink" title="一本好书"></a>一本好书</h2><p>在安静的午后，翻开一本喜欢的书，沉浸在文字的世界里。</p>
+<h2 id="家人的陪伴"><a href="#家人的陪伴" class="headerlink" title="家人的陪伴"></a>家人的陪伴</h2><p>和家人一起吃饭、聊天，这些平凡的时光其实是最珍贵的。</p>
+<p>生活就是由这些小确幸组成的，让我们学会发现和珍惜它们。</p>
+]]></content>
+      <categories>
+        <category>单纯</category>
+      </categories>
+      <tags>
+        <tag>生活</tag>
+        <tag>感悟</tag>
+        <tag>日常</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>音乐meting自建api</title>
+    <url>/2023/06/08/%E9%9F%B3%E4%B9%90meting%E8%87%AA%E5%BB%BAapi/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>前端</category>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>教程</tag>
+        <tag>音乐</tag>
+        <tag>meting</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>腾讯出品免费logo制作神器AI Logo,腾讯这次真的良心了</title>
+    <url>/2023/08/19/%E8%85%BE%E8%AE%AF%E5%87%BA%E5%93%81%E5%85%8D%E8%B4%B9logo%E5%88%B6%E4%BD%9C%E7%A5%9E%E5%99%A8AI-Logo-%E8%85%BE%E8%AE%AF%E8%BF%99%E6%AC%A1%E7%9C%9F%E7%9A%84%E8%89%AF%E5%BF%83%E4%BA%86/</url>
+    <content><![CDATA[<p>今天我要向大家推荐一款由腾讯出品的免费Logo制作神器——AI Logo。这次腾讯真的很良心！您可以访问AI Logo官方网站开始体验。</p>
+<h2 id="什么是AI-Logo？"><a href="#什么是AI-Logo？" class="headerlink" title="什么是AI Logo？"></a>什么是AI Logo？</h2><p>AI Logo是一款基于人工智能技术的Logo设计工具，旨在帮助用户快速创建独特、专业的Logo设计。它提供了丰富的设计元素、字体和图标，让您能够轻松制作出符合品牌形象的Logo，10秒创建您的LOGO！</p>
+<h2 id="如何使用AI-Logo？"><a href="#如何使用AI-Logo？" class="headerlink" title="如何使用AI Logo？"></a>如何使用AI Logo？</h2><ol>
+<li>访问AI Logo官方网站</li>
+<li>输入你的logo名字</li>
+<li>选择行业分类，我这边选择一手元宇宙🤣</li>
+<li>选择联想关键词</li>
+<li>选择喜欢的主色</li>
+<li>生成成功，可以直接选择进行下载</li>
+</ol>
+<p>在设计界面上，可以选择使用智能生成的设计方案，或者自行选择设计元素进行定制。</p>
+<p>根据需求，对Logo进行调整、修改和优化，直到满意为止。</p>
+<p>完成Logo设计后，可以选择下载Logo文件，保存到本地。</p>
+<p>值得注意的是生成后的图片，左上角都有标注是商用许可或个人许可</p>
+<h2 id="主要特点"><a href="#主要特点" class="headerlink" title="主要特点"></a>主要特点</h2><h3 id="免费使用"><a href="#免费使用" class="headerlink" title="免费使用"></a>免费使用</h3><p>AI Logo是一款完全免费的Logo制作工具，无需支付任何费用即可使用其中的所有功能。这对于初创企业、个人创作者或需要频繁设计Logo的用户来说，无疑是一个非常好的选择。</p>
+<h3 id="智能设计"><a href="#智能设计" class="headerlink" title="智能设计"></a>智能设计</h3><p>AI Logo采用了先进的人工智能技术，能够根据用户输入的关键词、行业类型和设计偏好，自动生成多种Logo设计方案。这大大节省了设计时间，提高了设计效率。</p>
+<h3 id="丰富的设计元素"><a href="#丰富的设计元素" class="headerlink" title="丰富的设计元素"></a>丰富的设计元素</h3><p>AI Logo提供了大量的设计元素，包括图标、字体、颜色等，用户可以根据自己的需求进行选择和组合，创造出独特的Logo设计。</p>
+<h3 id="简单易用"><a href="#简单易用" class="headerlink" title="简单易用"></a>简单易用</h3><p>AI Logo的操作界面简洁明了，即使是没有设计经验的用户也能够轻松上手。只需要几个简单的步骤，就能够制作出专业水准的Logo。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>AI Logo作为腾讯出品的免费Logo制作工具，无论是在功能性还是易用性方面都表现出色。对于需要快速制作Logo的用户来说，这绝对是一个值得尝试的工具。腾讯这次真的很良心，为广大用户提供了如此优秀的免费工具！</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>AI</tag>
+        <tag>绘图</tag>
+        <tag>Logo</tag>
+      </tags>
+  </entry>
+</search>
