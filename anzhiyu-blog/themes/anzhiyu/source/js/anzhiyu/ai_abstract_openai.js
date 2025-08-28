@@ -236,26 +236,63 @@
   console.log('🔍 调试: 如果预生成缓存不工作，请检查控制台输出');
 
   // 立即测试预生成摘要文件访问
-  fetch('/data/ai-summaries.json')
-    .then(response => {
-      if (response.ok) {
-        console.log('✅ 预生成摘要文件可以访问');
-        return response.json();
-      } else {
-        console.log('❌ 预生成摘要文件访问失败:', response.status);
-        return null;
-      }
-    })
-    .then(data => {
-      if (data) {
-        console.log('📊 预生成摘要文件包含', Object.keys(data).length, '个摘要');
-        console.log('📋 当前页面路径:', location.pathname);
-        console.log('🔍 是否包含当前页面:', data[location.pathname] ? '是' : '否');
-      }
-    })
-    .catch(error => {
-      console.log('❌ 预生成摘要文件加载异常:', error);
-    });
+  console.log('🌐 当前域名:', location.hostname);
+  console.log('🔗 完整URL:', location.href);
+  console.log('🔒 协议:', location.protocol);
+  console.log('🚪 端口:', location.port);
+
+  // 测试多种路径格式
+  const testUrls = [
+    '/data/ai-summaries.json',
+    './data/ai-summaries.json',
+    location.origin + '/data/ai-summaries.json'
+  ];
+
+  console.log('🧪 测试多种URL格式...');
+
+  Promise.all(testUrls.map(url =>
+    fetch(url)
+      .then(response => ({
+        url,
+        status: response.status,
+        ok: response.ok,
+        headers: Object.fromEntries(response.headers.entries())
+      }))
+      .catch(error => ({
+        url,
+        error: error.message
+      }))
+  )).then(results => {
+    console.log('📊 URL测试结果:', results);
+
+    // 找到第一个成功的URL
+    const successResult = results.find(r => r.ok);
+    if (successResult) {
+      console.log('✅ 找到可用URL:', successResult.url);
+      // 使用成功的URL重新获取数据
+      return fetch(successResult.url).then(r => r.json());
+    } else {
+      console.log('❌ 所有URL都失败了');
+      return null;
+    }
+  }).then(data => {
+    if (data) {
+      console.log('📊 预生成摘要文件包含', Object.keys(data).length, '个摘要');
+      console.log('📋 当前页面路径:', location.pathname);
+      console.log('🔍 是否包含当前页面:', data[location.pathname] ? '是' : '否');
+
+      // 显示所有可用路径的前5个，用于调试
+      const availablePaths = Object.keys(data).slice(0, 5);
+      console.log('📝 可用路径示例:', availablePaths);
+
+      // 保存到全局变量供后续使用
+      window.preGeneratedSummaries = data;
+      console.log('💾 预生成摘要已缓存到全局变量');
+    }
+  }).catch(error => {
+    console.log('❌ 预生成摘要文件加载异常:', error);
+    console.log('❌ 错误详情:', error.message);
+  });
 
   // 添加全局缓存管理函数，方便调试和管理
   window.cacheUtils = cacheUtils; // 暴露cacheUtils到全局作用域
