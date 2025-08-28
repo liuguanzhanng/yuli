@@ -25,8 +25,9 @@
   // AI摘要缓存配置
   const AI_CACHE_CONFIG = {
     prefix: 'ai_summary_cache_',
-    expireDays: 30, // 缓存30天 - 内存占用低，可以延长缓存时间
-    version: '1.0'
+    expireDays: 30, // 本地缓存30天
+    version: '1.0',
+    preGeneratedUrl: '/data/ai-summaries.json' // 预生成摘要文件路径
   };
 
   const post_ai = document.querySelector(".post-ai-description");
@@ -95,9 +96,17 @@
       }
     },
 
-    // 从缓存获取摘要
-    getSummary(content, mode) {
+    // 从缓存获取摘要（优先检查预生成，然后检查本地缓存）
+    async getSummary(content, mode) {
       try {
+        // 1. 首先检查预生成的摘要
+        const preGeneratedSummary = await this.getPreGeneratedSummary();
+        if (preGeneratedSummary) {
+          console.log('✅ 使用预生成的AI摘要');
+          return preGeneratedSummary;
+        }
+
+        // 2. 然后检查本地缓存
         const cacheKey = this.generateCacheKey(content, mode);
         let cacheData;
 
@@ -117,11 +126,58 @@
         }
 
         if (cacheData && cacheData.version === AI_CACHE_CONFIG.version) {
-          console.log('使用缓存的AI摘要:', cacheKey);
+          console.log('✅ 使用本地缓存的AI摘要');
           return cacheData.summary;
         }
       } catch (error) {
         console.warn('缓存读取失败:', error);
+      }
+      return null;
+    },
+
+    // 获取预生成的摘要
+    async getPreGeneratedSummary() {
+      try {
+        const currentPath = location.pathname;
+        const decodedPath = decodeURIComponent(currentPath); // 解码URL
+        console.log('🔍 当前页面路径:', currentPath);
+        console.log('🔍 解码后路径:', decodedPath);
+
+        // 尝试从全局变量获取（如果已加载）
+        if (window.preGeneratedSummaries) {
+          // 尝试原始路径和解码路径
+          const summary = window.preGeneratedSummaries[currentPath] || window.preGeneratedSummaries[decodedPath];
+          if (summary) {
+            console.log('✅ 从全局变量获取预生成摘要');
+            return summary.summary;
+          }
+        }
+
+        // 尝试从服务器获取预生成文件
+        console.log('📡 尝试加载预生成摘要文件:', AI_CACHE_CONFIG.preGeneratedUrl);
+        const response = await fetch(AI_CACHE_CONFIG.preGeneratedUrl);
+        if (response.ok) {
+          const summaries = await response.json();
+          window.preGeneratedSummaries = summaries; // 缓存到全局变量
+
+          console.log('📋 可用的预生成摘要路径:', Object.keys(summaries));
+          console.log('🎯 查找路径（原始）:', currentPath);
+          console.log('🎯 查找路径（解码）:', decodedPath);
+
+          // 尝试原始路径和解码路径
+          const summary = summaries[currentPath] || summaries[decodedPath];
+          if (summary) {
+            console.log('✅ 找到预生成摘要!');
+            return summary.summary;
+          } else {
+            console.log('❌ 未找到当前路径的预生成摘要');
+            console.log('❌ 尝试的路径:', [currentPath, decodedPath]);
+          }
+        } else {
+          console.log('❌ 预生成摘要文件加载失败:', response.status);
+        }
+      } catch (error) {
+        console.log('⚠️ 预生成摘要加载异常:', error.message);
       }
       return null;
     },
@@ -179,6 +235,7 @@
   console.log('🔧 缓存管理: aiSummaryCache.stats() 查看统计 | aiSummaryCache.clearAll() 清理缓存');
 
   // 添加全局缓存管理函数，方便调试和管理
+  window.cacheUtils = cacheUtils; // 暴露cacheUtils到全局作用域
   window.aiSummaryCache = {
     // 清理所有AI摘要缓存
     clearAll() {
@@ -284,10 +341,9 @@
     num = Math.max(1000, Math.min(2000, num));
     const truncateDescription = (title + pageFillDescription).trim().substring(0, num);
 
-    // 首先检查缓存
-    const cachedSummary = cacheUtils.getSummary(truncateDescription, 'openai');
+    // 首先检查缓存（预生成 + 本地缓存）
+    const cachedSummary = await cacheUtils.getSummary(truncateDescription, 'openai');
     if (cachedSummary) {
-      console.log('✅ 使用缓存的AI摘要，节省API调用');
       setTimeout(() => {
         aiTitleRefreshIcon.style.opacity = "1";
       }, 300);
