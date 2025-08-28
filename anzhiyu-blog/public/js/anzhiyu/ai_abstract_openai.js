@@ -229,10 +229,33 @@
   cacheUtils.cleanExpiredCache();
 
   // 在页面加载时显示缓存提示信息
-  console.log('🚀 AI摘要缓存系统已启用 (专为OpenAI模式优化)');
+  console.log('🚀 AI摘要缓存系统已启用 (专为OpenAI模式优化) v2.1');
   console.log('⏰ 缓存时间: 30天 | 💾 内存占用极低 (<100KB)');
   console.log('💡 提示: 按住Ctrl键点击刷新按钮可跳过缓存强制重新生成');
   console.log('🔧 缓存管理: aiSummaryCache.stats() 查看统计 | aiSummaryCache.clearAll() 清理缓存');
+  console.log('🔍 调试: 如果预生成缓存不工作，请检查控制台输出');
+
+  // 立即测试预生成摘要文件访问
+  fetch('/data/ai-summaries.json')
+    .then(response => {
+      if (response.ok) {
+        console.log('✅ 预生成摘要文件可以访问');
+        return response.json();
+      } else {
+        console.log('❌ 预生成摘要文件访问失败:', response.status);
+        return null;
+      }
+    })
+    .then(data => {
+      if (data) {
+        console.log('📊 预生成摘要文件包含', Object.keys(data).length, '个摘要');
+        console.log('📋 当前页面路径:', location.pathname);
+        console.log('🔍 是否包含当前页面:', data[location.pathname] ? '是' : '否');
+      }
+    })
+    .catch(error => {
+      console.log('❌ 预生成摘要文件加载异常:', error);
+    });
 
   // 添加全局缓存管理函数，方便调试和管理
   window.cacheUtils = cacheUtils; // 暴露cacheUtils到全局作用域

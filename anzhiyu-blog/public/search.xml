@@ -1,35 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>AI动画测试</title>
-    <url>/2025/01/23/AI%E5%8A%A8%E7%94%BB%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<h1 id="AI动画测试文章"><a href="#AI动画测试文章" class="headerlink" title="AI动画测试文章"></a>AI动画测试文章</h1><p>这是一篇专门用来测试AI摘要动画效果的文章。我们需要确保AI摘要能够完整显示，不会出现截断现象。</p>
-<h2 id="测试内容"><a href="#测试内容" class="headerlink" title="测试内容"></a>测试内容</h2><h3 id="长文本测试"><a href="#长文本测试" class="headerlink" title="长文本测试"></a>长文本测试</h3><p>这里有一段比较长的文本，用来测试AI摘要生成时是否能够完整显示所有内容。文本包含了各种标点符号，如逗号、句号、感叹号、问号等，这些都会影响动画的显示效果。</p>
-<h3 id="技术要点"><a href="#技术要点" class="headerlink" title="技术要点"></a>技术要点</h3><ol>
-<li>动画逻辑修复</li>
-<li>光标处理优化</li>
-<li>状态管理改进</li>
-<li>错误处理完善</li>
-</ol>
-<h3 id="预期效果"><a href="#预期效果" class="headerlink" title="预期效果"></a>预期效果</h3><ul>
-<li>完整显示所有文本内容</li>
-<li>流畅的打字机动画效果</li>
-<li>标点符号处的适当停顿</li>
-<li>正确的光标显示和移除</li>
-</ul>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>通过这次测试，我们可以验证AI摘要动画是否已经修复了截断问题。如果一切正常，用户应该能看到完整的AI摘要内容，而不是被截断的文本。</p>
-<p>这篇文章包含了足够的内容来生成一个有意义的摘要，同时也提供了足够的复杂性来测试动画逻辑的各个方面。</p>
-]]></content>
-      <categories>
-        <category>测试</category>
-      </categories>
-      <tags>
-        <tag>AI</tag>
-        <tag>动画</tag>
-        <tag>测试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>AI摘要功能优化记录</title>
     <url>/2025/01/23/AI%E6%91%98%E8%A6%81%E5%8A%9F%E8%83%BD%E4%BC%98%E5%8C%96%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<h1 id="AI摘要功能优化记录"><a href="#AI摘要功能优化记录" class="headerlink" title="AI摘要功能优化记录"></a>AI摘要功能优化记录</h1><p>最近在优化博客的AI摘要功能时，遇到了一个有趣的问题：AI生成的摘要在显示时会出现截断现象，有时能完整显示，有时只显示一半就停止了。经过深入排查和修复，现在将整个过程记录下来，希望能对遇到类似问题的朋友有所帮助。</p>
@@ -160,54 +131,32 @@
       </tags>
   </entry>
   <entry>
-    <title>Affinity Designer 图标设计教程</title>
-    <url>/2025/04/18/Affinity-Designer%E5%9B%BE%E6%A0%87%E8%AE%BE%E8%AE%A1%E6%95%99%E7%A8%8B/</url>
-    <content><![CDATA[<h1 id="Affinity-Designer-图标设计教程"><a href="#Affinity-Designer-图标设计教程" class="headerlink" title="Affinity Designer 图标设计教程"></a>Affinity Designer 图标设计教程</h1><p>Affinity Designer 是一款专业的矢量图形设计软件，特别适合图标设计。</p>
-<h2 id="基础设置"><a href="#基础设置" class="headerlink" title="基础设置"></a>基础设置</h2><h3 id="1-新建文档"><a href="#1-新建文档" class="headerlink" title="1. 新建文档"></a>1. 新建文档</h3><ul>
-<li>尺寸：1024x1024px</li>
-<li>DPI：72（屏幕显示）或 300（打印）</li>
-<li>颜色模式：RGB</li>
+    <title>AI动画测试</title>
+    <url>/2025/01/23/AI%E5%8A%A8%E7%94%BB%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<h1 id="AI动画测试文章"><a href="#AI动画测试文章" class="headerlink" title="AI动画测试文章"></a>AI动画测试文章</h1><p>这是一篇专门用来测试AI摘要动画效果的文章。我们需要确保AI摘要能够完整显示，不会出现截断现象。</p>
+<h2 id="测试内容"><a href="#测试内容" class="headerlink" title="测试内容"></a>测试内容</h2><h3 id="长文本测试"><a href="#长文本测试" class="headerlink" title="长文本测试"></a>长文本测试</h3><p>这里有一段比较长的文本，用来测试AI摘要生成时是否能够完整显示所有内容。文本包含了各种标点符号，如逗号、句号、感叹号、问号等，这些都会影响动画的显示效果。</p>
+<h3 id="技术要点"><a href="#技术要点" class="headerlink" title="技术要点"></a>技术要点</h3><ol>
+<li>动画逻辑修复</li>
+<li>光标处理优化</li>
+<li>状态管理改进</li>
+<li>错误处理完善</li>
+</ol>
+<h3 id="预期效果"><a href="#预期效果" class="headerlink" title="预期效果"></a>预期效果</h3><ul>
+<li>完整显示所有文本内容</li>
+<li>流畅的打字机动画效果</li>
+<li>标点符号处的适当停顿</li>
+<li>正确的光标显示和移除</li>
 </ul>
-<h3 id="2-网格设置"><a href="#2-网格设置" class="headerlink" title="2. 网格设置"></a>2. 网格设置</h3><ul>
-<li>启用网格：View &gt; Show Grid</li>
-<li>网格间距：8px 或 16px</li>
-<li>启用对齐：View &gt; Snap to Grid</li>
-</ul>
-<h2 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h2><h3 id="1-简洁性"><a href="#1-简洁性" class="headerlink" title="1. 简洁性"></a>1. 简洁性</h3><p>图标应该简洁明了，避免过多细节</p>
-<h3 id="2-一致性"><a href="#2-一致性" class="headerlink" title="2. 一致性"></a>2. 一致性</h3><p>保持相同的设计风格和视觉重量</p>
-<h3 id="3-可识别性"><a href="#3-可识别性" class="headerlink" title="3. 可识别性"></a>3. 可识别性</h3><p>确保图标在小尺寸下仍然清晰可辨</p>
-<h2 id="实战案例：设计一个文件夹图标"><a href="#实战案例：设计一个文件夹图标" class="headerlink" title="实战案例：设计一个文件夹图标"></a>实战案例：设计一个文件夹图标</h2><h3 id="步骤-1：基础形状"><a href="#步骤-1：基础形状" class="headerlink" title="步骤 1：基础形状"></a>步骤 1：基础形状</h3><ol>
-<li>使用矩形工具创建文件夹主体</li>
-<li>添加圆角（半径：8px）</li>
-<li>创建文件夹标签页</li>
-</ol>
-<h3 id="步骤-2：添加细节"><a href="#步骤-2：添加细节" class="headerlink" title="步骤 2：添加细节"></a>步骤 2：添加细节</h3><ol>
-<li>使用渐变填充增加立体感</li>
-<li>添加阴影效果</li>
-<li>调整透明度和混合模式</li>
-</ol>
-<h3 id="步骤-3：颜色搭配"><a href="#步骤-3：颜色搭配" class="headerlink" title="步骤 3：颜色搭配"></a>步骤 3：颜色搭配</h3><ol>
-<li>主色：#4A90E2</li>
-<li>阴影：#2C5282</li>
-<li>高光：#63B3ED</li>
-</ol>
-<h3 id="步骤-4：导出设置"><a href="#步骤-4：导出设置" class="headerlink" title="步骤 4：导出设置"></a>步骤 4：导出设置</h3><ol>
-<li>格式：PNG、SVG</li>
-<li>尺寸：16px、32px、64px、128px</li>
-<li>优化：启用压缩</li>
-</ol>
-<h2 id="高级技巧"><a href="#高级技巧" class="headerlink" title="高级技巧"></a>高级技巧</h2><h3 id="1-使用符号库"><a href="#1-使用符号库" class="headerlink" title="1. 使用符号库"></a>1. 使用符号库</h3><p>创建可重复使用的设计元素</p>
-<h3 id="2-批量导出"><a href="#2-批量导出" class="headerlink" title="2. 批量导出"></a>2. 批量导出</h3><p>设置多种尺寸的导出预设</p>
-<h3 id="3-颜色管理"><a href="#3-颜色管理" class="headerlink" title="3. 颜色管理"></a>3. 颜色管理</h3><p>建立统一的色彩调色板</p>
-<p>通过这些技巧，你可以设计出专业级别的图标！</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>通过这次测试，我们可以验证AI摘要动画是否已经修复了截断问题。如果一切正常，用户应该能看到完整的AI摘要内容，而不是被截断的文本。</p>
+<p>这篇文章包含了足够的内容来生成一个有意义的摘要，同时也提供了足够的复杂性来测试动画逻辑的各个方面。</p>
 ]]></content>
       <categories>
-        <category>技巧</category>
+        <category>测试</category>
       </categories>
       <tags>
-        <tag>设计</tag>
-        <tag>图标</tag>
-        <tag>Affinity Designer</tag>
+        <tag>AI</tag>
+        <tag>动画</tag>
+        <tag>测试</tag>
       </tags>
   </entry>
   <entry>
@@ -239,6 +188,39 @@
         <tag>Docker</tag>
         <tag>部署</tag>
         <tag>容器化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Github 主题系统</title>
+    <url>/2025/04/18/Github%E4%B8%BB%E9%A2%98%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<h1 id="Github-主题系统"><a href="#Github-主题系统" class="headerlink" title="Github 主题系统"></a>Github 主题系统</h1><p>Github 不仅是代码托管平台，还提供了丰富的主题定制功能。</p>
+<h2 id="README-美化"><a href="#README-美化" class="headerlink" title="README 美化"></a>README 美化</h2><h3 id="1-个人资料-README"><a href="#1-个人资料-README" class="headerlink" title="1. 个人资料 README"></a>1. 个人资料 README</h3><p>在用户名同名仓库中创建 README.md，可以自定义个人主页</p>
+<h3 id="2-动态统计"><a href="#2-动态统计" class="headerlink" title="2. 动态统计"></a>2. 动态统计</h3><p>使用 GitHub Stats 卡片显示代码统计</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">![<span class="string">GitHub stats</span>](<span class="link">https://github-readme-stats.vercel.app/api?username=your-username</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-技能徽章"><a href="#3-技能徽章" class="headerlink" title="3. 技能徽章"></a>3. 技能徽章</h3><p>添加技能和工具徽章</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">![<span class="string">HTML5</span>](<span class="link">https://img.shields.io/badge/-HTML5-E34F26?style=flat&amp;logo=html5&amp;logoColor=white</span>)</span><br><span class="line">![<span class="string">CSS3</span>](<span class="link">https://img.shields.io/badge/-CSS3-1572B6?style=flat&amp;logo=css3</span>)</span><br><span class="line">![<span class="string">JavaScript</span>](<span class="link">https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat&amp;logo=javascript&amp;logoColor=black</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="仓库主题"><a href="#仓库主题" class="headerlink" title="仓库主题"></a>仓库主题</h2><h3 id="1-选择合适的-License"><a href="#1-选择合适的-License" class="headerlink" title="1. 选择合适的 License"></a>1. 选择合适的 License</h3><p>为项目选择合适的开源协议</p>
+<h3 id="2-编写详细的-README"><a href="#2-编写详细的-README" class="headerlink" title="2. 编写详细的 README"></a>2. 编写详细的 README</h3><ul>
+<li>项目介绍</li>
+<li>安装说明</li>
+<li>使用方法</li>
+<li>贡献指南</li>
+</ul>
+<h3 id="3-使用-GitHub-Pages"><a href="#3-使用-GitHub-Pages" class="headerlink" title="3. 使用 GitHub Pages"></a>3. 使用 GitHub Pages</h3><p>将项目部署为静态网站</p>
+<h2 id="高级功能"><a href="#高级功能" class="headerlink" title="高级功能"></a>高级功能</h2><h3 id="GitHub-Actions"><a href="#GitHub-Actions" class="headerlink" title="GitHub Actions"></a>GitHub Actions</h3><p>自动化工作流程，实现 CI&#x2F;CD</p>
+<h3 id="Issues-模板"><a href="#Issues-模板" class="headerlink" title="Issues 模板"></a>Issues 模板</h3><p>标准化问题报告格式</p>
+<h3 id="Pull-Request-模板"><a href="#Pull-Request-模板" class="headerlink" title="Pull Request 模板"></a>Pull Request 模板</h3><p>规范代码贡献流程</p>
+<p>通过这些功能，可以让你的 GitHub 仓库更加专业和美观！</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>Github</tag>
+        <tag>主题</tag>
+        <tag>开源</tag>
       </tags>
   </entry>
   <entry>
@@ -360,90 +342,79 @@
       </tags>
   </entry>
   <entry>
-    <title>Github 主题系统</title>
-    <url>/2025/04/18/Github%E4%B8%BB%E9%A2%98%E7%B3%BB%E7%BB%9F/</url>
-    <content><![CDATA[<h1 id="Github-主题系统"><a href="#Github-主题系统" class="headerlink" title="Github 主题系统"></a>Github 主题系统</h1><p>Github 不仅是代码托管平台，还提供了丰富的主题定制功能。</p>
-<h2 id="README-美化"><a href="#README-美化" class="headerlink" title="README 美化"></a>README 美化</h2><h3 id="1-个人资料-README"><a href="#1-个人资料-README" class="headerlink" title="1. 个人资料 README"></a>1. 个人资料 README</h3><p>在用户名同名仓库中创建 README.md，可以自定义个人主页</p>
-<h3 id="2-动态统计"><a href="#2-动态统计" class="headerlink" title="2. 动态统计"></a>2. 动态统计</h3><p>使用 GitHub Stats 卡片显示代码统计</p>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">![<span class="string">GitHub stats</span>](<span class="link">https://github-readme-stats.vercel.app/api?username=your-username</span>)</span><br></pre></td></tr></table></figure>
+    <title>Hello World</title>
+    <url>/2025/08/14/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="3-技能徽章"><a href="#3-技能徽章" class="headerlink" title="3. 技能徽章"></a>3. 技能徽章</h3><p>添加技能和工具徽章</p>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">![<span class="string">HTML5</span>](<span class="link">https://img.shields.io/badge/-HTML5-E34F26?style=flat&amp;logo=html5&amp;logoColor=white</span>)</span><br><span class="line">![<span class="string">CSS3</span>](<span class="link">https://img.shields.io/badge/-CSS3-1572B6?style=flat&amp;logo=css3</span>)</span><br><span class="line">![<span class="string">JavaScript</span>](<span class="link">https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat&amp;logo=javascript&amp;logoColor=black</span>)</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 
-<h2 id="仓库主题"><a href="#仓库主题" class="headerlink" title="仓库主题"></a>仓库主题</h2><h3 id="1-选择合适的-License"><a href="#1-选择合适的-License" class="headerlink" title="1. 选择合适的 License"></a>1. 选择合适的 License</h3><p>为项目选择合适的开源协议</p>
-<h3 id="2-编写详细的-README"><a href="#2-编写详细的-README" class="headerlink" title="2. 编写详细的 README"></a>2. 编写详细的 README</h3><ul>
-<li>项目介绍</li>
-<li>安装说明</li>
-<li>使用方法</li>
-<li>贡献指南</li>
-</ul>
-<h3 id="3-使用-GitHub-Pages"><a href="#3-使用-GitHub-Pages" class="headerlink" title="3. 使用 GitHub Pages"></a>3. 使用 GitHub Pages</h3><p>将项目部署为静态网站</p>
-<h2 id="高级功能"><a href="#高级功能" class="headerlink" title="高级功能"></a>高级功能</h2><h3 id="GitHub-Actions"><a href="#GitHub-Actions" class="headerlink" title="GitHub Actions"></a>GitHub Actions</h3><p>自动化工作流程，实现 CI&#x2F;CD</p>
-<h3 id="Issues-模板"><a href="#Issues-模板" class="headerlink" title="Issues 模板"></a>Issues 模板</h3><p>标准化问题报告格式</p>
-<h3 id="Pull-Request-模板"><a href="#Pull-Request-模板" class="headerlink" title="Pull Request 模板"></a>Pull Request 模板</h3><p>规范代码贡献流程</p>
-<p>通过这些功能，可以让你的 GitHub 仓库更加专业和美观！</p>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
       <categories>
-        <category>工具</category>
+        <category>技巧</category>
       </categories>
       <tags>
-        <tag>Github</tag>
-        <tag>主题</tag>
-        <tag>开源</tag>
+        <tag>Hexo</tag>
+        <tag>开始</tag>
       </tags>
   </entry>
   <entry>
-    <title>Python 自动化脚本合集</title>
-    <url>/2025/04/18/Python%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC%E5%90%88%E9%9B%86/</url>
-    <content><![CDATA[<h1 id="Python-自动化脚本合集"><a href="#Python-自动化脚本合集" class="headerlink" title="Python 自动化脚本合集"></a>Python 自动化脚本合集</h1><p>Python 的强大之处在于能够快速编写自动化脚本，解决日常工作中的重复性任务。</p>
-<h2 id="文件处理脚本"><a href="#文件处理脚本" class="headerlink" title="文件处理脚本"></a>文件处理脚本</h2><h3 id="批量重命名文件"><a href="#批量重命名文件" class="headerlink" title="批量重命名文件"></a>批量重命名文件</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">batch_rename</span>(<span class="params">directory, pattern, replacement</span>):</span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> os.listdir(directory):</span><br><span class="line">        <span class="keyword">if</span> re.search(pattern, filename):</span><br><span class="line">            new_name = re.sub(pattern, replacement, filename)</span><br><span class="line">            old_path = os.path.join(directory, filename)</span><br><span class="line">            new_path = os.path.join(directory, new_name)</span><br><span class="line">            os.rename(old_path, new_path)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;重命名: <span class="subst">&#123;filename&#125;</span> -&gt; <span class="subst">&#123;new_name&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="文件分类整理"><a href="#文件分类整理" class="headerlink" title="文件分类整理"></a>文件分类整理</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">organize_files</span>(<span class="params">source_dir</span>):</span><br><span class="line">    extensions = &#123;</span><br><span class="line">        <span class="string">&#x27;images&#x27;</span>: [<span class="string">&#x27;.jpg&#x27;</span>, <span class="string">&#x27;.jpeg&#x27;</span>, <span class="string">&#x27;.png&#x27;</span>, <span class="string">&#x27;.gif&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;documents&#x27;</span>: [<span class="string">&#x27;.pdf&#x27;</span>, <span class="string">&#x27;.doc&#x27;</span>, <span class="string">&#x27;.docx&#x27;</span>, <span class="string">&#x27;.txt&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;videos&#x27;</span>: [<span class="string">&#x27;.mp4&#x27;</span>, <span class="string">&#x27;.avi&#x27;</span>, <span class="string">&#x27;.mkv&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;music&#x27;</span>: [<span class="string">&#x27;.mp3&#x27;</span>, <span class="string">&#x27;.wav&#x27;</span>, <span class="string">&#x27;.flac&#x27;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> os.listdir(source_dir):</span><br><span class="line">        file_ext = os.path.splitext(filename)[<span class="number">1</span>].lower()</span><br><span class="line">        <span class="keyword">for</span> folder, exts <span class="keyword">in</span> extensions.items():</span><br><span class="line">            <span class="keyword">if</span> file_ext <span class="keyword">in</span> exts:</span><br><span class="line">                dest_dir = os.path.join(source_dir, folder)</span><br><span class="line">                os.makedirs(dest_dir, exist_ok=<span class="literal">True</span>)</span><br><span class="line">                shutil.move(</span><br><span class="line">                    os.path.join(source_dir, filename),</span><br><span class="line">                    os.path.join(dest_dir, filename)</span><br><span class="line">                )</span><br><span class="line">                <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="网络爬虫脚本"><a href="#网络爬虫脚本" class="headerlink" title="网络爬虫脚本"></a>网络爬虫脚本</h2><h3 id="简单网页内容抓取"><a href="#简单网页内容抓取" class="headerlink" title="简单网页内容抓取"></a>简单网页内容抓取</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">scrape_website</span>(<span class="params">url</span>):</span><br><span class="line">    response = requests.get(url)</span><br><span class="line">    soup = BeautifulSoup(response.content, <span class="string">&#x27;html.parser&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 提取标题</span></span><br><span class="line">    title = soup.find(<span class="string">&#x27;title&#x27;</span>).text</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 提取所有链接</span></span><br><span class="line">    links = [a.get(<span class="string">&#x27;href&#x27;</span>) <span class="keyword">for</span> a <span class="keyword">in</span> soup.find_all(<span class="string">&#x27;a&#x27;</span>, href=<span class="literal">True</span>)]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> title, links</span><br></pre></td></tr></table></figure>
-
-<h2 id="数据处理脚本"><a href="#数据处理脚本" class="headerlink" title="数据处理脚本"></a>数据处理脚本</h2><h3 id="Excel-数据处理"><a href="#Excel-数据处理" class="headerlink" title="Excel 数据处理"></a>Excel 数据处理</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_excel</span>(<span class="params">file_path</span>):</span><br><span class="line">    df = pd.read_excel(file_path)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 数据清洗</span></span><br><span class="line">    df = df.dropna()  <span class="comment"># 删除空值</span></span><br><span class="line">    df = df.drop_duplicates()  <span class="comment"># 删除重复值</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 数据分析</span></span><br><span class="line">    summary = df.describe()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> df, summary</span><br></pre></td></tr></table></figure>
-
-<p>这些脚本可以大大提高日常工作效率，让重复性任务自动化！</p>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>自动化</tag>
-        <tag>脚本</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Win 下使用 Git 自动同步笔记</title>
-    <url>/2025/04/18/Win%E4%B8%8B%E4%BD%BF%E7%94%A8Git%E8%87%AA%E5%8A%A8%E5%90%8C%E6%AD%A5%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h1 id="Win-下使用-Git-自动同步笔记"><a href="#Win-下使用-Git-自动同步笔记" class="headerlink" title="Win 下使用 Git 自动同步笔记"></a>Win 下使用 Git 自动同步笔记</h1><p>折腾了很久要记录系统，发现还是大道至简，回归日记 Typora + MarkDown。</p>
-<h2 id="为什么选择-Git-Markdown"><a href="#为什么选择-Git-Markdown" class="headerlink" title="为什么选择 Git + Markdown"></a>为什么选择 Git + Markdown</h2><p>在尝试了各种笔记软件后，我发现最简单的方案往往是最好的：</p>
-<ul>
-<li><strong>Typora</strong>: 优雅的 Markdown 编辑器</li>
-<li><strong>Git</strong>: 强大的版本控制</li>
-<li><strong>GitHub&#x2F;Gitee</strong>: 云端同步</li>
+    <title>Affinity Designer 图标设计教程</title>
+    <url>/2025/04/18/Affinity-Designer%E5%9B%BE%E6%A0%87%E8%AE%BE%E8%AE%A1%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="Affinity-Designer-图标设计教程"><a href="#Affinity-Designer-图标设计教程" class="headerlink" title="Affinity Designer 图标设计教程"></a>Affinity Designer 图标设计教程</h1><p>Affinity Designer 是一款专业的矢量图形设计软件，特别适合图标设计。</p>
+<h2 id="基础设置"><a href="#基础设置" class="headerlink" title="基础设置"></a>基础设置</h2><h3 id="1-新建文档"><a href="#1-新建文档" class="headerlink" title="1. 新建文档"></a>1. 新建文档</h3><ul>
+<li>尺寸：1024x1024px</li>
+<li>DPI：72（屏幕显示）或 300（打印）</li>
+<li>颜色模式：RGB</li>
 </ul>
-<h2 id="自动同步脚本"><a href="#自动同步脚本" class="headerlink" title="自动同步脚本"></a>自动同步脚本</h2><p>创建一个批处理文件来自动同步：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@echo off</span><br><span class="line">cd /d &quot;D:\Notes&quot;</span><br><span class="line">git add .</span><br><span class="line">git commit -m &quot;Auto sync: %date% %time%&quot;</span><br><span class="line">git push origin main</span><br><span class="line">echo 同步完成！</span><br><span class="line">pause</span><br></pre></td></tr></table></figure>
-
-<h2 id="定时任务设置"><a href="#定时任务设置" class="headerlink" title="定时任务设置"></a>定时任务设置</h2><p>使用 Windows 任务计划程序设置定时同步：</p>
-<ol>
-<li>打开任务计划程序</li>
-<li>创建基本任务</li>
-<li>设置触发器（每天&#x2F;每小时）</li>
-<li>设置操作为运行批处理文件</li>
+<h3 id="2-网格设置"><a href="#2-网格设置" class="headerlink" title="2. 网格设置"></a>2. 网格设置</h3><ul>
+<li>启用网格：View &gt; Show Grid</li>
+<li>网格间距：8px 或 16px</li>
+<li>启用对齐：View &gt; Snap to Grid</li>
+</ul>
+<h2 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h2><h3 id="1-简洁性"><a href="#1-简洁性" class="headerlink" title="1. 简洁性"></a>1. 简洁性</h3><p>图标应该简洁明了，避免过多细节</p>
+<h3 id="2-一致性"><a href="#2-一致性" class="headerlink" title="2. 一致性"></a>2. 一致性</h3><p>保持相同的设计风格和视觉重量</p>
+<h3 id="3-可识别性"><a href="#3-可识别性" class="headerlink" title="3. 可识别性"></a>3. 可识别性</h3><p>确保图标在小尺寸下仍然清晰可辨</p>
+<h2 id="实战案例：设计一个文件夹图标"><a href="#实战案例：设计一个文件夹图标" class="headerlink" title="实战案例：设计一个文件夹图标"></a>实战案例：设计一个文件夹图标</h2><h3 id="步骤-1：基础形状"><a href="#步骤-1：基础形状" class="headerlink" title="步骤 1：基础形状"></a>步骤 1：基础形状</h3><ol>
+<li>使用矩形工具创建文件夹主体</li>
+<li>添加圆角（半径：8px）</li>
+<li>创建文件夹标签页</li>
 </ol>
-<p>这样就能实现笔记的自动同步了！</p>
+<h3 id="步骤-2：添加细节"><a href="#步骤-2：添加细节" class="headerlink" title="步骤 2：添加细节"></a>步骤 2：添加细节</h3><ol>
+<li>使用渐变填充增加立体感</li>
+<li>添加阴影效果</li>
+<li>调整透明度和混合模式</li>
+</ol>
+<h3 id="步骤-3：颜色搭配"><a href="#步骤-3：颜色搭配" class="headerlink" title="步骤 3：颜色搭配"></a>步骤 3：颜色搭配</h3><ol>
+<li>主色：#4A90E2</li>
+<li>阴影：#2C5282</li>
+<li>高光：#63B3ED</li>
+</ol>
+<h3 id="步骤-4：导出设置"><a href="#步骤-4：导出设置" class="headerlink" title="步骤 4：导出设置"></a>步骤 4：导出设置</h3><ol>
+<li>格式：PNG、SVG</li>
+<li>尺寸：16px、32px、64px、128px</li>
+<li>优化：启用压缩</li>
+</ol>
+<h2 id="高级技巧"><a href="#高级技巧" class="headerlink" title="高级技巧"></a>高级技巧</h2><h3 id="1-使用符号库"><a href="#1-使用符号库" class="headerlink" title="1. 使用符号库"></a>1. 使用符号库</h3><p>创建可重复使用的设计元素</p>
+<h3 id="2-批量导出"><a href="#2-批量导出" class="headerlink" title="2. 批量导出"></a>2. 批量导出</h3><p>设置多种尺寸的导出预设</p>
+<h3 id="3-颜色管理"><a href="#3-颜色管理" class="headerlink" title="3. 颜色管理"></a>3. 颜色管理</h3><p>建立统一的色彩调色板</p>
+<p>通过这些技巧，你可以设计出专业级别的图标！</p>
 ]]></content>
       <categories>
-        <category>工具</category>
+        <category>技巧</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
-        <tag>Git</tag>
-        <tag>工具</tag>
+        <tag>设计</tag>
+        <tag>图标</tag>
+        <tag>Affinity Designer</tag>
       </tags>
   </entry>
   <entry>
@@ -505,16 +476,57 @@
       </tags>
   </entry>
   <entry>
-    <title>hexo博客工作流CI（一键部署的快乐）</title>
-    <url>/2023/02/15/hexo%E5%8D%9A%E5%AE%A2%E5%B7%A5%E4%BD%9C%E6%B5%81CI%EF%BC%88%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E7%9A%84%E5%BF%AB%E4%B9%90%EF%BC%89/</url>
-    <content><![CDATA[]]></content>
+    <title>Python 自动化脚本合集</title>
+    <url>/2025/04/18/Python%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC%E5%90%88%E9%9B%86/</url>
+    <content><![CDATA[<h1 id="Python-自动化脚本合集"><a href="#Python-自动化脚本合集" class="headerlink" title="Python 自动化脚本合集"></a>Python 自动化脚本合集</h1><p>Python 的强大之处在于能够快速编写自动化脚本，解决日常工作中的重复性任务。</p>
+<h2 id="文件处理脚本"><a href="#文件处理脚本" class="headerlink" title="文件处理脚本"></a>文件处理脚本</h2><h3 id="批量重命名文件"><a href="#批量重命名文件" class="headerlink" title="批量重命名文件"></a>批量重命名文件</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">batch_rename</span>(<span class="params">directory, pattern, replacement</span>):</span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> os.listdir(directory):</span><br><span class="line">        <span class="keyword">if</span> re.search(pattern, filename):</span><br><span class="line">            new_name = re.sub(pattern, replacement, filename)</span><br><span class="line">            old_path = os.path.join(directory, filename)</span><br><span class="line">            new_path = os.path.join(directory, new_name)</span><br><span class="line">            os.rename(old_path, new_path)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;重命名: <span class="subst">&#123;filename&#125;</span> -&gt; <span class="subst">&#123;new_name&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件分类整理"><a href="#文件分类整理" class="headerlink" title="文件分类整理"></a>文件分类整理</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">organize_files</span>(<span class="params">source_dir</span>):</span><br><span class="line">    extensions = &#123;</span><br><span class="line">        <span class="string">&#x27;images&#x27;</span>: [<span class="string">&#x27;.jpg&#x27;</span>, <span class="string">&#x27;.jpeg&#x27;</span>, <span class="string">&#x27;.png&#x27;</span>, <span class="string">&#x27;.gif&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;documents&#x27;</span>: [<span class="string">&#x27;.pdf&#x27;</span>, <span class="string">&#x27;.doc&#x27;</span>, <span class="string">&#x27;.docx&#x27;</span>, <span class="string">&#x27;.txt&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;videos&#x27;</span>: [<span class="string">&#x27;.mp4&#x27;</span>, <span class="string">&#x27;.avi&#x27;</span>, <span class="string">&#x27;.mkv&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;music&#x27;</span>: [<span class="string">&#x27;.mp3&#x27;</span>, <span class="string">&#x27;.wav&#x27;</span>, <span class="string">&#x27;.flac&#x27;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> os.listdir(source_dir):</span><br><span class="line">        file_ext = os.path.splitext(filename)[<span class="number">1</span>].lower()</span><br><span class="line">        <span class="keyword">for</span> folder, exts <span class="keyword">in</span> extensions.items():</span><br><span class="line">            <span class="keyword">if</span> file_ext <span class="keyword">in</span> exts:</span><br><span class="line">                dest_dir = os.path.join(source_dir, folder)</span><br><span class="line">                os.makedirs(dest_dir, exist_ok=<span class="literal">True</span>)</span><br><span class="line">                shutil.move(</span><br><span class="line">                    os.path.join(source_dir, filename),</span><br><span class="line">                    os.path.join(dest_dir, filename)</span><br><span class="line">                )</span><br><span class="line">                <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="网络爬虫脚本"><a href="#网络爬虫脚本" class="headerlink" title="网络爬虫脚本"></a>网络爬虫脚本</h2><h3 id="简单网页内容抓取"><a href="#简单网页内容抓取" class="headerlink" title="简单网页内容抓取"></a>简单网页内容抓取</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">scrape_website</span>(<span class="params">url</span>):</span><br><span class="line">    response = requests.get(url)</span><br><span class="line">    soup = BeautifulSoup(response.content, <span class="string">&#x27;html.parser&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 提取标题</span></span><br><span class="line">    title = soup.find(<span class="string">&#x27;title&#x27;</span>).text</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 提取所有链接</span></span><br><span class="line">    links = [a.get(<span class="string">&#x27;href&#x27;</span>) <span class="keyword">for</span> a <span class="keyword">in</span> soup.find_all(<span class="string">&#x27;a&#x27;</span>, href=<span class="literal">True</span>)]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> title, links</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据处理脚本"><a href="#数据处理脚本" class="headerlink" title="数据处理脚本"></a>数据处理脚本</h2><h3 id="Excel-数据处理"><a href="#Excel-数据处理" class="headerlink" title="Excel 数据处理"></a>Excel 数据处理</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_excel</span>(<span class="params">file_path</span>):</span><br><span class="line">    df = pd.read_excel(file_path)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 数据清洗</span></span><br><span class="line">    df = df.dropna()  <span class="comment"># 删除空值</span></span><br><span class="line">    df = df.drop_duplicates()  <span class="comment"># 删除重复值</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 数据分析</span></span><br><span class="line">    summary = df.describe()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> df, summary</span><br></pre></td></tr></table></figure>
+
+<p>这些脚本可以大大提高日常工作效率，让重复性任务自动化！</p>
+]]></content>
       <categories>
-        <category>前端</category>
-        <category>开发</category>
+        <category>工具</category>
       </categories>
       <tags>
-        <tag>Hexo</tag>
-        <tag>工作流</tag>
+        <tag>Python</tag>
+        <tag>自动化</tag>
+        <tag>脚本</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Win 下使用 Git 自动同步笔记</title>
+    <url>/2025/04/18/Win%E4%B8%8B%E4%BD%BF%E7%94%A8Git%E8%87%AA%E5%8A%A8%E5%90%8C%E6%AD%A5%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="Win-下使用-Git-自动同步笔记"><a href="#Win-下使用-Git-自动同步笔记" class="headerlink" title="Win 下使用 Git 自动同步笔记"></a>Win 下使用 Git 自动同步笔记</h1><p>折腾了很久要记录系统，发现还是大道至简，回归日记 Typora + MarkDown。</p>
+<h2 id="为什么选择-Git-Markdown"><a href="#为什么选择-Git-Markdown" class="headerlink" title="为什么选择 Git + Markdown"></a>为什么选择 Git + Markdown</h2><p>在尝试了各种笔记软件后，我发现最简单的方案往往是最好的：</p>
+<ul>
+<li><strong>Typora</strong>: 优雅的 Markdown 编辑器</li>
+<li><strong>Git</strong>: 强大的版本控制</li>
+<li><strong>GitHub&#x2F;Gitee</strong>: 云端同步</li>
+</ul>
+<h2 id="自动同步脚本"><a href="#自动同步脚本" class="headerlink" title="自动同步脚本"></a>自动同步脚本</h2><p>创建一个批处理文件来自动同步：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@echo off</span><br><span class="line">cd /d &quot;D:\Notes&quot;</span><br><span class="line">git add .</span><br><span class="line">git commit -m &quot;Auto sync: %date% %time%&quot;</span><br><span class="line">git push origin main</span><br><span class="line">echo 同步完成！</span><br><span class="line">pause</span><br></pre></td></tr></table></figure>
+
+<h2 id="定时任务设置"><a href="#定时任务设置" class="headerlink" title="定时任务设置"></a>定时任务设置</h2><p>使用 Windows 任务计划程序设置定时同步：</p>
+<ol>
+<li>打开任务计划程序</li>
+<li>创建基本任务</li>
+<li>设置触发器（每天&#x2F;每小时）</li>
+<li>设置操作为运行批处理文件</li>
+</ol>
+<p>这样就能实现笔记的自动同步了！</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>自动化</tag>
+        <tag>Git</tag>
+        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -531,58 +543,21 @@
       </tags>
   </entry>
   <entry>
-    <title>vscode 插件 How 外挂推荐</title>
-    <url>/2025/04/18/vscode%E6%8F%92%E4%BB%B6How%E5%A4%96%E6%8C%82%E6%8E%A8%E8%8D%90/</url>
-    <content><![CDATA[<h1 id="VSCode-插件推荐"><a href="#VSCode-插件推荐" class="headerlink" title="VSCode 插件推荐"></a>VSCode 插件推荐</h1><p>作为前端开发者，VSCode 是我们最常用的编辑器。今天推荐一些超级好用的插件。</p>
-<h2 id="必装插件"><a href="#必装插件" class="headerlink" title="必装插件"></a>必装插件</h2><h3 id="1-Auto-Rename-Tag"><a href="#1-Auto-Rename-Tag" class="headerlink" title="1. Auto Rename Tag"></a>1. Auto Rename Tag</h3><p>自动重命名配对的 HTML&#x2F;XML 标签</p>
-<h3 id="2-Bracket-Pair-Colorizer"><a href="#2-Bracket-Pair-Colorizer" class="headerlink" title="2. Bracket Pair Colorizer"></a>2. Bracket Pair Colorizer</h3><p>为括号添加颜色，让代码结构更清晰</p>
-<h3 id="3-Chinese-Simplified"><a href="#3-Chinese-Simplified" class="headerlink" title="3. Chinese (Simplified)"></a>3. Chinese (Simplified)</h3><p>中文语言包</p>
-<h3 id="4-ES7-React-Redux-React-Native-snippets"><a href="#4-ES7-React-Redux-React-Native-snippets" class="headerlink" title="4. ES7+ React&#x2F;Redux&#x2F;React-Native snippets"></a>4. ES7+ React&#x2F;Redux&#x2F;React-Native snippets</h3><p>React 开发必备代码片段</p>
-<h3 id="5-GitLens"><a href="#5-GitLens" class="headerlink" title="5. GitLens"></a>5. GitLens</h3><p>增强 Git 功能，显示代码作者和提交历史</p>
-<h2 id="主题插件"><a href="#主题插件" class="headerlink" title="主题插件"></a>主题插件</h2><h3 id="One-Dark-Pro"><a href="#One-Dark-Pro" class="headerlink" title="One Dark Pro"></a>One Dark Pro</h3><p>经典的暗色主题</p>
-<h3 id="Material-Icon-Theme"><a href="#Material-Icon-Theme" class="headerlink" title="Material Icon Theme"></a>Material Icon Theme</h3><p>美观的文件图标主题</p>
-<h2 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h2><h3 id="Live-Server"><a href="#Live-Server" class="headerlink" title="Live Server"></a>Live Server</h3><p>本地开发服务器</p>
-<h3 id="Prettier"><a href="#Prettier" class="headerlink" title="Prettier"></a>Prettier</h3><p>代码格式化工具</p>
-<h3 id="Thunder-Client"><a href="#Thunder-Client" class="headerlink" title="Thunder Client"></a>Thunder Client</h3><p>API 测试工具，类似 Postman</p>
-<p>这些插件能大大提升开发效率，强烈推荐！</p>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>VSCode</tag>
-        <tag>插件</tag>
-        <tag>开发工具</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>”</title>
     <url>/2025/08/15/%E2%80%9D/</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2025/08/14/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
+    <title>hexo博客工作流CI（一键部署的快乐）</title>
+    <url>/2023/02/15/hexo%E5%8D%9A%E5%AE%A2%E5%B7%A5%E4%BD%9C%E6%B5%81CI%EF%BC%88%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E7%9A%84%E5%BF%AB%E4%B9%90%EF%BC%89/</url>
+    <content><![CDATA[]]></content>
       <categories>
-        <category>技巧</category>
+        <category>前端</category>
+        <category>开发</category>
       </categories>
       <tags>
         <tag>Hexo</tag>
-        <tag>开始</tag>
+        <tag>工作流</tag>
       </tags>
   </entry>
   <entry>
@@ -625,6 +600,44 @@
       </tags>
   </entry>
   <entry>
+    <title>vscode 插件 How 外挂推荐</title>
+    <url>/2025/04/18/vscode%E6%8F%92%E4%BB%B6How%E5%A4%96%E6%8C%82%E6%8E%A8%E8%8D%90/</url>
+    <content><![CDATA[<h1 id="VSCode-插件推荐"><a href="#VSCode-插件推荐" class="headerlink" title="VSCode 插件推荐"></a>VSCode 插件推荐</h1><p>作为前端开发者，VSCode 是我们最常用的编辑器。今天推荐一些超级好用的插件。</p>
+<h2 id="必装插件"><a href="#必装插件" class="headerlink" title="必装插件"></a>必装插件</h2><h3 id="1-Auto-Rename-Tag"><a href="#1-Auto-Rename-Tag" class="headerlink" title="1. Auto Rename Tag"></a>1. Auto Rename Tag</h3><p>自动重命名配对的 HTML&#x2F;XML 标签</p>
+<h3 id="2-Bracket-Pair-Colorizer"><a href="#2-Bracket-Pair-Colorizer" class="headerlink" title="2. Bracket Pair Colorizer"></a>2. Bracket Pair Colorizer</h3><p>为括号添加颜色，让代码结构更清晰</p>
+<h3 id="3-Chinese-Simplified"><a href="#3-Chinese-Simplified" class="headerlink" title="3. Chinese (Simplified)"></a>3. Chinese (Simplified)</h3><p>中文语言包</p>
+<h3 id="4-ES7-React-Redux-React-Native-snippets"><a href="#4-ES7-React-Redux-React-Native-snippets" class="headerlink" title="4. ES7+ React&#x2F;Redux&#x2F;React-Native snippets"></a>4. ES7+ React&#x2F;Redux&#x2F;React-Native snippets</h3><p>React 开发必备代码片段</p>
+<h3 id="5-GitLens"><a href="#5-GitLens" class="headerlink" title="5. GitLens"></a>5. GitLens</h3><p>增强 Git 功能，显示代码作者和提交历史</p>
+<h2 id="主题插件"><a href="#主题插件" class="headerlink" title="主题插件"></a>主题插件</h2><h3 id="One-Dark-Pro"><a href="#One-Dark-Pro" class="headerlink" title="One Dark Pro"></a>One Dark Pro</h3><p>经典的暗色主题</p>
+<h3 id="Material-Icon-Theme"><a href="#Material-Icon-Theme" class="headerlink" title="Material Icon Theme"></a>Material Icon Theme</h3><p>美观的文件图标主题</p>
+<h2 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h2><h3 id="Live-Server"><a href="#Live-Server" class="headerlink" title="Live Server"></a>Live Server</h3><p>本地开发服务器</p>
+<h3 id="Prettier"><a href="#Prettier" class="headerlink" title="Prettier"></a>Prettier</h3><p>代码格式化工具</p>
+<h3 id="Thunder-Client"><a href="#Thunder-Client" class="headerlink" title="Thunder Client"></a>Thunder Client</h3><p>API 测试工具，类似 Postman</p>
+<p>这些插件能大大提升开发效率，强烈推荐！</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>VSCode</tag>
+        <tag>插件</tag>
+        <tag>开发工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>全新卡片式外链标签引入</title>
+    <url>/2023/06/30/%E5%85%A8%E6%96%B0%E5%8D%A1%E7%89%87%E5%BC%8F%E5%A4%96%E9%93%BE%E6%A0%87%E7%AD%BE%E5%BC%95%E5%85%A5/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>前端</category>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>教程</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>前端开发技巧分享</title>
     <url>/2025/04/18/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7%E5%88%86%E4%BA%AB/</url>
     <content><![CDATA[<h1 id="前端开发技巧分享"><a href="#前端开发技巧分享" class="headerlink" title="前端开发技巧分享"></a>前端开发技巧分享</h1><p>在前端开发中，掌握一些实用技巧能让我们事半功倍。</p>
@@ -655,16 +668,31 @@
       </tags>
   </entry>
   <entry>
-    <title>全新卡片式外链标签引入</title>
-    <url>/2023/06/30/%E5%85%A8%E6%96%B0%E5%8D%A1%E7%89%87%E5%BC%8F%E5%A4%96%E9%93%BE%E6%A0%87%E7%AD%BE%E5%BC%95%E5%85%A5/</url>
-    <content><![CDATA[]]></content>
+    <title>安知鱼主题标签 Tag Plugins</title>
+    <url>/2023/06/01/%E5%AE%89%E7%9F%A5%E9%B1%BC%E4%B8%BB%E9%A2%98%E6%A0%87%E7%AD%BE-Tag-Plugins/</url>
+    <content><![CDATA[<h1 id="Hexo-Tag-Plugins"><a href="#Hexo-Tag-Plugins" class="headerlink" title="Hexo Tag Plugins"></a>Hexo Tag Plugins</h1><p>AnZhiYu主题中大部分标签移植于店长的hexo-butterfly-tag-plugins-plus，转载请注明来自安知鱼</p>
+<h2 id="段落文本-p标签"><a href="#段落文本-p标签" class="headerlink" title="段落文本 p标签"></a>段落文本 p标签</h2><h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% p 样式参数(参数以空格划分), 文本内容 %&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置参数"><a href="#配置参数" class="headerlink" title="配置参数"></a>配置参数</h3><ul>
+<li>字体: logo, code</li>
+<li>颜色: red,yellow,green,cyan,blue,gray</li>
+<li>大小: small, h4, h3, h2, h1, large, huge, ultra</li>
+<li>对齐方向: left, center, right</li>
+</ul>
+<h3 id="样式预览"><a href="#样式预览" class="headerlink" title="样式预览"></a>样式预览</h3><p class='p red'>彩色文字</p>在一段话中方便插入各种颜色的标签，包括：<p class='p red'>红色</p>、<p class='p yellow'>黄色</p>、<p class='p green'>绿色</p>、<p class='p cyan'>青色</p>、<p class='p blue'>蓝色</p>、<p class='p gray'>灰色</p>。
+
+<p class='p h1 center logo'>超大号文字</p>
+
+<p>文档「开始」页面中的标题部分就是超大号文字。</p>
+<p class='p center logo large'>Volantis</p>
+<p class='p center small'>A Wonderful Theme for Hexo</p>
+]]></content>
       <categories>
-        <category>前端</category>
-        <category>开发</category>
+        <category>技巧</category>
       </categories>
       <tags>
         <tag>Hexo</tag>
-        <tag>教程</tag>
+        <tag>Tag Plugins</tag>
       </tags>
   </entry>
   <entry>
@@ -700,34 +728,6 @@
         <tag>读书</tag>
         <tag>笔记</tag>
         <tag>成长</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>安知鱼主题标签 Tag Plugins</title>
-    <url>/2023/06/01/%E5%AE%89%E7%9F%A5%E9%B1%BC%E4%B8%BB%E9%A2%98%E6%A0%87%E7%AD%BE-Tag-Plugins/</url>
-    <content><![CDATA[<h1 id="Hexo-Tag-Plugins"><a href="#Hexo-Tag-Plugins" class="headerlink" title="Hexo Tag Plugins"></a>Hexo Tag Plugins</h1><p>AnZhiYu主题中大部分标签移植于店长的hexo-butterfly-tag-plugins-plus，转载请注明来自安知鱼</p>
-<h2 id="段落文本-p标签"><a href="#段落文本-p标签" class="headerlink" title="段落文本 p标签"></a>段落文本 p标签</h2><h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% p 样式参数(参数以空格划分), 文本内容 %&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="配置参数"><a href="#配置参数" class="headerlink" title="配置参数"></a>配置参数</h3><ul>
-<li>字体: logo, code</li>
-<li>颜色: red,yellow,green,cyan,blue,gray</li>
-<li>大小: small, h4, h3, h2, h1, large, huge, ultra</li>
-<li>对齐方向: left, center, right</li>
-</ul>
-<h3 id="样式预览"><a href="#样式预览" class="headerlink" title="样式预览"></a>样式预览</h3><p class='p red'>彩色文字</p>在一段话中方便插入各种颜色的标签，包括：<p class='p red'>红色</p>、<p class='p yellow'>黄色</p>、<p class='p green'>绿色</p>、<p class='p cyan'>青色</p>、<p class='p blue'>蓝色</p>、<p class='p gray'>灰色</p>。
-
-<p class='p h1 center logo'>超大号文字</p>
-
-<p>文档「开始」页面中的标题部分就是超大号文字。</p>
-<p class='p center logo large'>Volantis</p>
-<p class='p center small'>A Wonderful Theme for Hexo</p>
-]]></content>
-      <categories>
-        <category>技巧</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>Tag Plugins</tag>
       </tags>
   </entry>
   <entry>
@@ -786,6 +786,19 @@
       </tags>
   </entry>
   <entry>
+    <title>当AI加上PS后让我变的极为振奋(附mac安装ps beta25.0)教程</title>
+    <url>/2023/08/18/%E5%BD%93AI%E5%8A%A0%E4%B8%8APS%E5%90%8E%E8%AE%A9%E6%88%91%E5%8F%98%E7%9A%84%E6%9E%81%E4%B8%BA%E6%8C%AF%E5%A5%8B-%E9%99%84mac%E5%AE%89%E8%A3%85ps-beta25-0-%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>技巧</category>
+      </categories>
+      <tags>
+        <tag>AI</tag>
+        <tag>PS</tag>
+        <tag>绘图</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>我的第一篇博客文章</title>
     <url>/2025/08/15/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/</url>
     <content><![CDATA[<h1 id="欢迎来到我的博客！"><a href="#欢迎来到我的博客！" class="headerlink" title="欢迎来到我的博客！"></a>欢迎来到我的博客！</h1><p>大家好！这是我在 <strong>Xing Blog</strong> 上的第一篇文章。经过一番折腾，终于把博客搭建好了，现在可以开始记录我的学习和生活了。</p>
@@ -829,28 +842,6 @@
       </tags>
   </entry>
   <entry>
-    <title>生活中的小确幸</title>
-    <url>/2025/04/18/%E7%94%9F%E6%B4%BB%E4%B8%AD%E7%9A%84%E5%B0%8F%E7%A1%AE%E5%B9%B8/</url>
-    <content><![CDATA[<h1 id="生活中的小确幸"><a href="#生活中的小确幸" class="headerlink" title="生活中的小确幸"></a>生活中的小确幸</h1><p>生活不总是轰轰烈烈的，更多时候是由一个个小确幸组成的。</p>
-<h2 id="清晨的阳光"><a href="#清晨的阳光" class="headerlink" title="清晨的阳光"></a>清晨的阳光</h2><p>每天早上，阳光透过窗帘洒在桌案上，那一刻总是让人感到温暖和希望。</p>
-<h2 id="一杯好咖啡"><a href="#一杯好咖啡" class="headerlink" title="一杯好咖啡"></a>一杯好咖啡</h2><p>工作间隙，品尝一杯香醇的咖啡，让疲惫的心灵得到片刻的宁静。</p>
-<h2 id="朋友的问候"><a href="#朋友的问候" class="headerlink" title="朋友的问候"></a>朋友的问候</h2><p>收到朋友发来的一条简单问候，瞬间感受到被关心的温暖。</p>
-<h2 id="完成一个小目标"><a href="#完成一个小目标" class="headerlink" title="完成一个小目标"></a>完成一个小目标</h2><p>无论是学会一个新技能，还是完成一个小项目，那种成就感都是珍贵的。</p>
-<h2 id="夜晚的星空"><a href="#夜晚的星空" class="headerlink" title="夜晚的星空"></a>夜晚的星空</h2><p>偶尔抬头看看星空，提醒自己在这个广阔的宇宙中，我们都是独特的存在。</p>
-<h2 id="一本好书"><a href="#一本好书" class="headerlink" title="一本好书"></a>一本好书</h2><p>在安静的午后，翻开一本喜欢的书，沉浸在文字的世界里。</p>
-<h2 id="家人的陪伴"><a href="#家人的陪伴" class="headerlink" title="家人的陪伴"></a>家人的陪伴</h2><p>和家人一起吃饭、聊天，这些平凡的时光其实是最珍贵的。</p>
-<p>生活就是由这些小确幸组成的，让我们学会发现和珍惜它们。</p>
-]]></content>
-      <categories>
-        <category>单纯</category>
-      </categories>
-      <tags>
-        <tag>生活</tag>
-        <tag>感悟</tag>
-        <tag>日常</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>摄影技巧分享</title>
     <url>/2025/04/17/%E6%91%84%E5%BD%B1%E6%8A%80%E5%B7%A7%E5%88%86%E4%BA%AB/</url>
     <content><![CDATA[<h1 id="摄影技巧分享"><a href="#摄影技巧分享" class="headerlink" title="摄影技巧分享"></a>摄影技巧分享</h1><p>摄影是记录生活的最好方式之一，今天分享一些实用的摄影技巧。</p>
@@ -881,39 +872,25 @@
       </tags>
   </entry>
   <entry>
-    <title>网络安全方向：10分钟2700w请求的攻击我是如何处理的</title>
-    <url>/2023/07/16/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%96%B9%E5%90%91%EF%BC%9A10%E5%88%86%E9%92%9F2700w%E8%AF%B7%E6%B1%82%E7%9A%84%E6%94%BB%E5%87%BB%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E7%9A%84/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>技巧</category>
-      </categories>
-      <tags>
-        <tag>网络安全</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>当AI加上PS后让我变的极为振奋(附mac安装ps beta25.0)教程</title>
-    <url>/2023/08/18/%E5%BD%93AI%E5%8A%A0%E4%B8%8APS%E5%90%8E%E8%AE%A9%E6%88%91%E5%8F%98%E7%9A%84%E6%9E%81%E4%B8%BA%E6%8C%AF%E5%A5%8B-%E9%99%84mac%E5%AE%89%E8%A3%85ps-beta25-0-%E6%95%99%E7%A8%8B/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>技巧</category>
-      </categories>
-      <tags>
-        <tag>AI</tag>
-        <tag>PS</tag>
-        <tag>绘图</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>长沙两日游记</title>
-    <url>/2023/08/10/%E9%95%BF%E6%B2%99%E4%B8%A4%E6%97%A5%E6%B8%B8%E8%AE%B0/</url>
-    <content><![CDATA[]]></content>
+    <title>生活中的小确幸</title>
+    <url>/2025/04/18/%E7%94%9F%E6%B4%BB%E4%B8%AD%E7%9A%84%E5%B0%8F%E7%A1%AE%E5%B9%B8/</url>
+    <content><![CDATA[<h1 id="生活中的小确幸"><a href="#生活中的小确幸" class="headerlink" title="生活中的小确幸"></a>生活中的小确幸</h1><p>生活不总是轰轰烈烈的，更多时候是由一个个小确幸组成的。</p>
+<h2 id="清晨的阳光"><a href="#清晨的阳光" class="headerlink" title="清晨的阳光"></a>清晨的阳光</h2><p>每天早上，阳光透过窗帘洒在桌案上，那一刻总是让人感到温暖和希望。</p>
+<h2 id="一杯好咖啡"><a href="#一杯好咖啡" class="headerlink" title="一杯好咖啡"></a>一杯好咖啡</h2><p>工作间隙，品尝一杯香醇的咖啡，让疲惫的心灵得到片刻的宁静。</p>
+<h2 id="朋友的问候"><a href="#朋友的问候" class="headerlink" title="朋友的问候"></a>朋友的问候</h2><p>收到朋友发来的一条简单问候，瞬间感受到被关心的温暖。</p>
+<h2 id="完成一个小目标"><a href="#完成一个小目标" class="headerlink" title="完成一个小目标"></a>完成一个小目标</h2><p>无论是学会一个新技能，还是完成一个小项目，那种成就感都是珍贵的。</p>
+<h2 id="夜晚的星空"><a href="#夜晚的星空" class="headerlink" title="夜晚的星空"></a>夜晚的星空</h2><p>偶尔抬头看看星空，提醒自己在这个广阔的宇宙中，我们都是独特的存在。</p>
+<h2 id="一本好书"><a href="#一本好书" class="headerlink" title="一本好书"></a>一本好书</h2><p>在安静的午后，翻开一本喜欢的书，沉浸在文字的世界里。</p>
+<h2 id="家人的陪伴"><a href="#家人的陪伴" class="headerlink" title="家人的陪伴"></a>家人的陪伴</h2><p>和家人一起吃饭、聊天，这些平凡的时光其实是最珍贵的。</p>
+<p>生活就是由这些小确幸组成的，让我们学会发现和珍惜它们。</p>
+]]></content>
       <categories>
         <category>单纯</category>
       </categories>
       <tags>
         <tag>生活</tag>
-        <tag>旅行</tag>
+        <tag>感悟</tag>
+        <tag>日常</tag>
       </tags>
   </entry>
   <entry>
@@ -946,6 +923,29 @@
         <tag>AI</tag>
         <tag>绘图</tag>
         <tag>Logo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>长沙两日游记</title>
+    <url>/2023/08/10/%E9%95%BF%E6%B2%99%E4%B8%A4%E6%97%A5%E6%B8%B8%E8%AE%B0/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>单纯</category>
+      </categories>
+      <tags>
+        <tag>生活</tag>
+        <tag>旅行</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网络安全方向：10分钟2700w请求的攻击我是如何处理的</title>
+    <url>/2023/07/16/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%96%B9%E5%90%91%EF%BC%9A10%E5%88%86%E9%92%9F2700w%E8%AF%B7%E6%B1%82%E7%9A%84%E6%94%BB%E5%87%BB%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E7%9A%84/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>技巧</category>
+      </categories>
+      <tags>
+        <tag>网络安全</tag>
       </tags>
   </entry>
   <entry>

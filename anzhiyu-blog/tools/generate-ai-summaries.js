@@ -14,10 +14,10 @@ const CONFIG = {
   configFile: path.join(__dirname, '../_config.anzhiyu.yml'),
   // 文章源文件目录
   postsDir: path.join(__dirname, '../source/_posts'),
-  // 输出文件路径
-  outputFile: path.join(__dirname, '../public/data/ai-summaries.json'),
+  // 输出文件路径 - 保存到source目录，Hexo会自动复制到public
+  outputFile: path.join(__dirname, '../source/data/ai-summaries.json'),
   // 确保输出目录存在
-  outputDir: path.join(__dirname, '../public/data')
+  outputDir: path.join(__dirname, '../source/data')
 };
 
 class AISummaryGenerator {
@@ -90,14 +90,20 @@ class AISummaryGenerator {
     }
   }
 
-  // 生成文章URL
+  // 生成文章URL - 匹配Hexo的URL生成规则
   generateUrl(frontMatter) {
     const date = new Date(frontMatter.date);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    // 使用URL编码处理中文标题
-    const title = encodeURIComponent(frontMatter.title);
+
+    // Hexo会将标题中的特殊字符和空格处理为URL友好格式
+    // 移除或替换特殊字符，但保持中文字符
+    let title = frontMatter.title
+      .replace(/\s+/g, '') // 移除所有空格
+      .replace(/[^\w\u4e00-\u9fa5\u3400-\u4dbf\u{20000}-\u{2a6df}\u{2a700}-\u{2b73f}\u{2b740}-\u{2b81f}\u{2b820}-\u{2ceaf}\uf900-\ufaff\u3300-\u33ff\ufe30-\ufe4f\uf900-\ufaff\u{2f800}-\u{2fa1f}]/gu, '') // 保留字母、数字、中文字符
+      .replace(/[（）()]/g, ''); // 移除括号
+
     return `/${year}/${month}/${day}/${title}/`;
   }
 
