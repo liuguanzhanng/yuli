@@ -62,14 +62,15 @@ class AISummaryGenerator {
       const filePath = path.join(CONFIG.postsDir, filename);
       const content = fs.readFileSync(filePath, 'utf8');
       
-      // 解析Front Matter
-      const frontMatterMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+      // 解析Front Matter - 支持不同换行符和没有正文内容的文章
+      const frontMatterMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
       if (!frontMatterMatch) {
+        console.warn(`⚠️  文章格式不正确 ${filename}: 缺少Front Matter`);
         return null;
       }
 
       const frontMatter = yaml.load(frontMatterMatch[1]);
-      const postContent = frontMatterMatch[2];
+      const postContent = frontMatterMatch[2] || ''; // 允许空内容
 
       // 只处理启用AI的文章
       if (!frontMatter.ai) {
@@ -78,7 +79,8 @@ class AISummaryGenerator {
 
       return {
         title: frontMatter.title,
-        content: postContent,
+        content: postContent || '', // 确保内容不为空
+        description: frontMatter.description || '', // 添加description字段
         url: this.generateUrl(frontMatter),
         filename: filename
       };
@@ -94,13 +96,16 @@ class AISummaryGenerator {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    const title = frontMatter.title.replace(/[^\w\u4e00-\u9fa5]/g, '');
+    // 使用URL编码处理中文标题
+    const title = encodeURIComponent(frontMatter.title);
     return `/${year}/${month}/${day}/${title}/`;
   }
 
   // 调用OpenAI API生成摘要
-  async generateSummary(title, content) {
-    const truncateContent = (title + content).trim().substring(0, 1500);
+  async generateSummary(title, content, description = '') {
+    // 如果正文内容很少，使用description补充
+    const fullContent = content.trim() || description || title;
+    const truncateContent = (title + ' ' + fullContent).trim().substring(0, 1500);
     
     const requestBody = {
       model: this.openaiConfig.model || "gpt-3.5-turbo",
@@ -155,7 +160,7 @@ class AISummaryGenerator {
       const post = aiPosts[i];
       console.log(`\n📄 处理文章 ${i + 1}/${aiPosts.length}: ${post.title}`);
       
-      const summary = await this.generateSummary(post.title, post.content);
+      const summary = await this.generateSummary(post.title, post.content, post.description);
       if (summary) {
         this.summaries[post.url] = {
           summary: summary,
