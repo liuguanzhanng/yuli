@@ -7,7 +7,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # 生成的静态文件
-anzhiyu-blog/public/
 anzhiyu-blog/.deploy_git/
 
 # 数据库文件

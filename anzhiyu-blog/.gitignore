@@ -3,6 +3,6 @@ Thumbs.db
 db.json
 *.log
 node_modules/
-public/
+# 包含完整的public目录用于部署
 .deploy*/
 _multiconfig.yml
